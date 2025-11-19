@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ごくらく♪ゆこま温泉郷 掘削計算ツール（自作版）</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 16px;
+      line-height: 1.4;
+      background: #f5f5f5;
+    }
+    h1, h2, h3 {
+      margin: 0.4em 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .flex {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    label {
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    input[type="number"],
+    select,
+    input[type="text"] {
+      font-size: 0.9rem;
+      padding: 2px 4px;
+      min-width: 60px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px 6px;
+      text-align: center;
+    }
+    th {
+      background: #eaeaea;
+    }
+    .small-note {
+      font-size: 0.8rem;
+      color: #555;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .result-highlight {
+      font-weight: bold;
+      color: #004d40;
+    }
+    .turn-row-select {
+      width: 140px;
+    }
+    .wide-input {
+      width: 140px;
+    }
+    .disabled-field {
+      background: #f1f1f1;
+      color: #888;
+    }
+    .link-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+    .link-checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+    .table-responsive table {
+      width: 100%;
+      min-width: 360px;
+    }
+    .muted {
+      color: #777;
+      font-size: 0.75rem;
+    }
+    .current-turn-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 12px;
+      font-size: 0.9rem;
+    }
+    .plan-row {
+      transition: background-color 0.2s;
+    }
+    .plan-row.current-turn {
+      background: #fff6e0;
+    }
+    .result-summary {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      text-align: left;
+      white-space: pre-line;
+    }
+    .result-cell {
+      min-width: 220px;
+    }
+    @media (max-width: 640px) {
+      body {
+        margin: 8px;
+        font-size: 0.95rem;
+      }
+      .card {
+        padding: 12px;
+      }
+      .flex {
+        flex-direction: column;
+      }
+      input[type="number"],
+      select,
+      input[type="text"],
+      .turn-row-select,
+      .wide-input {
+        width: 100%;
+        font-size: 1rem;
+      }
+      table {
+        font-size: 0.8rem;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>ごくらく♪ゆこま温泉郷 掘削計算ツール（自作版）</h1>
+  <p class="small-note">
+    ・青因子/装備Lv/ステータスランク/をもとに掘削力を算出し，各ターンの行動から進捗をシミュレートします。<br />
+    ・ジュニア/クラシック/シニアの各ターン（1月前半～12月後半）を事前登録し、目標レースや自主レースも指定できます。<br />
+    ・トレーニング人数による基礎値補正（25～29）と行動固定値（レース/お休み等）をそのまま適用します。
+  </p>
+
+  <!-- ステータスランク / 青因子 / 装備Lv -->
+  <div class="card">
+    <h2>1. ステータス・因子・装備Lv</h2>
+    <div class="flex">
+      <div>
+        <h3>ステータスランク</h3>
+        <div class="table-responsive">
+          <table>
+            <tr>
+              <th>ステ</th>
+              <th>ランク</th>
+            </tr>
+            <tr>
+              <td>スピード</td>
+              <td><select id="stat_spd"></select></td>
+            </tr>
+            <tr>
+              <td>スタミナ</td>
+              <td><select id="stat_sta"></select></td>
+            </tr>
+            <tr>
+              <td>パワー</td>
+              <td><select id="stat_pow"></select></td>
+            </tr>
+            <tr>
+              <td>根性</td>
+              <td><select id="stat_gut"></select></td>
+            </tr>
+            <tr>
+              <td>賢さ</td>
+              <td><select id="stat_int"></select></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3>青因子枚数（面数）</h3>
+        <div class="table-responsive">
+          <table>
+            <tr>
+              <th>因子</th>
+              <th>枚数</th>
+              <th>1面あたり補正</th>
+            </tr>
+            <tr>
+              <td>スピード</td>
+              <td><input type="number" id="fct_spd" min="0" max="6" value="0" /></td>
+              <td class="small-note">砂 +10％ / 土 +6％</td>
+            </tr>
+            <tr>
+              <td>スタミナ</td>
+              <td><input type="number" id="fct_sta" min="0" max="6" value="0" /></td>
+              <td class="small-note">砂 +3％ / 岩 +3％</td>
+            </tr>
+            <tr>
+              <td>パワー</td>
+              <td><input type="number" id="fct_pow" min="0" max="6" value="0" /></td>
+              <td class="small-note">土 +3％ / 岩 +10％</td>
+            </tr>
+            <tr>
+              <td>根性</td>
+              <td><input type="number" id="fct_gut" min="0" max="6" value="0" /></td>
+              <td class="small-note">土 +10％</td>
+            </tr>
+            <tr>
+              <td>賢さ</td>
+              <td><input type="number" id="fct_int" min="0" max="6" value="0" /></td>
+              <td class="small-note">砂 +6％ / 岩 +6％</td>
+            </tr>
+          </table>
+        </div>
+        <p id="fct_warning" class="small-note" style="color:#c00; display:none;">青因子合計が6になるよう調整してください。</p>
+      </div>
+      <div>
+        <h3>掘削装備Lv</h3>
+        <div class="table-responsive">
+          <table>
+            <tr><th>装備</th><th>Lv</th></tr>
+            <tr>
+              <td>ホールディガー（砂）</td>
+              <td>
+                <select id="lv_sand">
+                  <option value="1" selected>Lv1 (+0%)</option>
+                  <option value="2">Lv2 (+30%)</option>
+                  <option value="3">Lv3 (+50%)</option>
+                  <option value="4">Lv4 (+70%)</option>
+                  <option value="5">Lv5 (+100%)</option>
+                  <option value="6">Lv6 (+130%)</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>アースドリル（土）</td>
+              <td>
+                <select id="lv_soil">
+                  <option value="1" selected>Lv1 (+0%)</option>
+                  <option value="2">Lv2 (+30%)</option>
+                  <option value="3">Lv3 (+50%)</option>
+                  <option value="4">Lv4 (+70%)</option>
+                  <option value="5">Lv5 (+100%)</option>
+                  <option value="6">Lv6 (+130%)</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>メタルクラウン（岩）</td>
+              <td>
+                <select id="lv_rock">
+                  <option value="1" selected>Lv1 (+0%)</option>
+                  <option value="2">Lv2 (+30%)</option>
+                  <option value="3">Lv3 (+50%)</option>
+                  <option value="4">Lv4 (+70%)</option>
+                  <option value="5">Lv5 (+100%)</option>
+                  <option value="6">Lv6 (+130%)</option>
+                </select>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive" style="margin-top:12px;">
+      <h3>装備ごとの掘削力</h3>
+      <table>
+        <tr>
+          <th></th>
+          <th>砂（ホールディガー）</th>
+          <th>土（アースドリル）</th>
+          <th>岩（メタルクラウン）</th>
+        </tr>
+        <tr>
+          <td>Lv補正倍率</td>
+          <td id="out_lv_sand">-</td>
+          <td id="out_lv_soil">-</td>
+          <td id="out_lv_rock">-</td>
+        </tr>
+        <tr>
+          <td>ステ補正倍率</td>
+          <td id="out_stat_sand">-</td>
+          <td id="out_stat_soil">-</td>
+          <td id="out_stat_rock">-</td>
+        </tr>
+        <tr>
+          <td>青因子補正倍率</td>
+          <td id="out_fct_sand">-</td>
+          <td id="out_fct_soil">-</td>
+          <td id="out_fct_rock">-</td>
+        </tr>
+        <tr>
+          <td><b>総合掘削力</b></td>
+          <td id="out_power_sand" class="result-highlight">-</td>
+          <td id="out_power_soil" class="result-highlight">-</td>
+          <td id="out_power_rock" class="result-highlight">-</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 源泉設定 -->
+  <div class="card">
+    <h2>2. 源泉と地層</h2>
+    <div class="flex">
+      <div>
+        <h3>源泉</h3>
+        <select id="spring_select" class="turn-row-select">
+          <option value="shikku">疾駆の湯（砂400）</option>
+          <option value="kennin">堅忍の湯（土400）</option>
+          <option value="meiseki">明晰の湯（岩400）</option>
+          <option value="shunsen">駿閃の古湯（砂300 土150）</option>
+          <option value="goukyaku">剛脚の古湯（砂300 岩150）</option>
+          <option value="kensou">健壮の古湯（土180 岩270）</option>
+          <option value="tenshou">天翔の古湯（土270 岩180）</option>
+          <option value="yukoma">秘湯ゆこま（砂180 土180 岩180）</option>
+          <option value="densetsu">伝説の秘湯（砂90 土90 岩90）</option>
+        </select>
+        <p class="small-note">
+          Game8 の表を参考。
+        </p>
+      </div>
+      <div>
+        <h3>地層の深さ（残り掘削量）</h3>
+        <div class="table-responsive">
+          <table>
+            <tr><th>地層</th><th>深さ</th></tr>
+            <tr><td>砂</td><td><input type="number" id="depth_sand" value="400" /></td></tr>
+            <tr><td>土</td><td><input type="number" id="depth_soil" value="0" /></td></tr>
+            <tr><td>岩</td><td><input type="number" id="depth_rock" value="0" /></td></tr>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3>シナリオリンク (+10%)</h3>
+        <div class="link-checkboxes">
+          <label><input type="checkbox" class="link-toggle" data-layer="sand">テイオー（砂）</label>
+          <label><input type="checkbox" class="link-toggle" data-layer="soil">ブルボン（土）</label>
+          <label><input type="checkbox" class="link-toggle" data-layer="soil">トラン（土）</label>
+          <label><input type="checkbox" class="link-toggle" data-layer="rock">タルマエ（岩）</label>
+          <label><input type="checkbox" class="link-toggle" data-layer="rock">アキュ（岩）</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ターン別行動プラン -->
+  <div class="card">
+    <h2>2. 行動プランと掘削進捗</h2>
+    <p class="small-note">
+      ・ターン順：ジュニア→クラシック→シニア、各月 前半/後半の計36ターン。<br />
+      ・行動パターン：トレーニング25 / 目標レース25 / 女将とお出かけ25 / 目標外レース15 / お出かけ15 / お休み15 / PR活動10。<br />
+      ・トレーニングのみ参加人数（0～4人）を指定し、基礎値を25～29に自動変換します。
+    </p>
+    <div class="current-turn-control">
+      <label for="current_phase">現在ターン</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <select id="current_phase" class="turn-row-select"></select>
+        <select id="current_turn" class="turn-row-select"></select>
+        <button id="calc_button">計算する</button>
+        <button id="reset_button">リセット</button>
+        <span id="error_message" style="color:#c00;"></span>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>ターン</th>
+            <th>行動</th>
+            <th>人数</th>
+            <th>レース名 / メモ</th>
+            <th>結果（基礎/掘削/残量）</th>
+          </tr>
+        </thead>
+        <tbody id="plan_body"></tbody>
+      </table>
+    </div>
+    <p class="small-note">
+      ※クラシックおよびシニアの7月・8月は掘削量が進みません（行動のみ登録）。
+    </p>
+    <p id="out_plan_header">-</p>
+  </div>
+
+<script>
+  const STAT_RANK_OPTIONS = [
+    {label: 'G～G+ (1-99)', large: 5,  medium: 3,  small: 0},
+    {label: 'F～F+ (100-199)', large: 8,  medium: 5,  small: 3},
+    {label: 'E～E+ (200-299)', large: 12, medium: 8,  small: 4},
+    {label: 'D～D+ (300-399)', large: 16, medium: 11, small: 6},
+    {label: 'C～C+ (400-599)', large: 20, medium: 14, small: 8},
+    {label: 'B～B+ (600-999)', large: 25, medium: 18, small: 10},
+    {label: 'A～A+ (1000-1199)', large: 30, medium: 22, small: 12},
+    {label: 'UG以上 (1200+)', large: 35, medium: 25, small: 15}
+  ];
+
+  const STAT_FIELDS = [
+    {id: 'stat_spd', defaultIndex: 1},
+    {id: 'stat_sta', defaultIndex: 1},
+    {id: 'stat_pow', defaultIndex: 1},
+    {id: 'stat_gut', defaultIndex: 1},
+    {id: 'stat_int', defaultIndex: 1}
+  ];
+
+  const EQUIP_STAT_IMPACT = {
+    sand: {large: ['spd'], medium: ['int'], small: ['sta']},
+    soil: {large: ['gut'], medium: ['spd'], small: ['pow']},
+    rock: {large: ['pow'], medium: ['int'], small: ['sta']}
+  };
+
+  const LV_BONUS_MAP = {1: 0, 2: 30, 3: 50, 4: 70, 5: 100, 6: 130};
+
+  const FACTOR_BONUS = {
+    fct_spd: {sand: 10, soil: 6},
+    fct_sta: {sand: 3, rock: 3},
+    fct_pow: {soil: 3, rock: 10},
+    fct_gut: {soil: 10},
+    fct_int: {sand: 6, rock: 6}
+  };
+
+  const LINK_BONUS = {sand: 0, soil: 0, rock: 0};
+  const SPRING_PRESETS = {
+    shikku:   {sand: 400, soil: 0,   rock: 0},
+    kennin:   {sand: 0,   soil: 400, rock: 0},
+    meiseki:  {sand: 0,   soil: 0,   rock: 400},
+    shunsen:  {sand: 300, soil: 150, rock: 0},
+    goukyaku: {sand: 300, soil: 0,   rock: 150},
+    kensou:   {sand: 0,   soil: 180, rock: 270},
+    tenshou:  {sand: 0,   soil: 270, rock: 180},
+    yukoma:   {sand: 180, soil: 180, rock: 180},
+    densetsu: {sand: 90,  soil: 90,  rock: 90}
+  };
+
+  const TRAINING_BASE = [25, 26, 27, 28, 29];
+
+  const ACTION_OPTIONS = [
+    {value: 'training', label: 'トレーニング', base: 25, needsParticipants: true},
+    {value: 'goal', label: '目標レース', base: 25, needsName: true},
+    {value: 'okami', label: '女将とお出かけ', base: 25},
+    {value: 'free_race', label: '目標外レース', base: 15, needsName: true},
+    {value: 'outing', label: 'お出かけ', base: 15},
+    {value: 'rest', label: 'お休み', base: 15},
+    {value: 'pr', label: 'PR活動', base: 10}
+  ];
+  const ACTION_MAP = ACTION_OPTIONS.reduce((acc, cur) => ({...acc, [cur.value]: cur}), {});
+
+  const PHASES = ['ジュニア', 'クラシック', 'シニア'];
+  const MONTHS = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  const HALF = ['前半', '後半'];
+  const TURN_INFO = [];
+  PHASES.forEach(phase => {
+    MONTHS.forEach(month => {
+      HALF.forEach(half => {
+        TURN_INFO.push({phase, label: `${month}${half}`});
+      });
+    });
+  });
+
+  const LAYERS = ['sand', 'soil', 'rock'];
+  const LAYER_LABEL = {sand: '砂', soil: '土', rock: '岩'};
+
+  const MAKE_DEBUT_PHASE = 'ジュニア';
+  const MAKE_DEBUT_LABEL = '6月後半';
+  const MAKE_DEBUT_INDEX = TURN_INFO.findIndex(
+    info => info.phase === MAKE_DEBUT_PHASE && info.label === MAKE_DEBUT_LABEL
+  ) + 1;
+
+  const planControls = [];
+  let completionTurnIndex = null;
+  let currentTurnValue = 1;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    populateStatSelects();
+    setupFactorValidation();
+    setupCurrentTurnSelector();
+    buildPlanTable();
+    document.getElementById('spring_select').addEventListener('change', onSpringChange);
+    document.getElementById('calc_button').addEventListener('click', runCalculation);
+    const resetButton = document.getElementById('reset_button');
+    if (resetButton) {
+      resetButton.addEventListener('click', resetSimulation);
+    }
+    document.querySelectorAll('.link-toggle').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const layer = cb.dataset.layer;
+        if (!layer) return;
+        LINK_BONUS[layer] += cb.checked ? 10 : -10;
+        runCalculation();
+      });
+    });
+    onSpringChange();
+    runCalculation();
+  });
+
+  function populateStatSelects() {
+    STAT_FIELDS.forEach(field => {
+      const select = document.getElementById(field.id);
+      STAT_RANK_OPTIONS.forEach((opt, idx) => {
+        const option = document.createElement('option');
+        option.value = idx;
+        option.textContent = opt.label;
+        select.appendChild(option);
+      });
+      select.value = String(field.defaultIndex);
+    });
+  }
+
+  function setupFactorValidation() {
+    const factorIds = ['fct_spd', 'fct_sta', 'fct_pow', 'fct_gut', 'fct_int'];
+    factorIds.forEach(id => {
+      document.getElementById(id).addEventListener('input', validateFactorTotal);
+    });
+    validateFactorTotal();
+  }
+
+  function validateFactorTotal() {
+    const factorIds = ['fct_spd', 'fct_sta', 'fct_pow', 'fct_gut', 'fct_int'];
+    const total = factorIds.reduce((sum, id) => sum + (parseInt(document.getElementById(id).value, 10) || 0), 0);
+    const warning = document.getElementById('fct_warning');
+    warning.style.display = total === 6 ? 'none' : 'block';
+  }
+
+  function setupCurrentTurnSelector() {
+    const phaseSelect = document.getElementById('current_phase');
+    const turnSelect = document.getElementById('current_turn');
+    if (!phaseSelect || !turnSelect) return;
+
+    PHASES.forEach(phase => {
+      const option = document.createElement('option');
+      option.value = phase;
+      option.textContent = phase;
+      phaseSelect.appendChild(option);
+    });
+    phaseSelect.value = PHASES[0];
+
+    updateTurnOptionsForPhase(phaseSelect, turnSelect, true);
+    phaseSelect.addEventListener('change', () => {
+      updateTurnOptionsForPhase(phaseSelect, turnSelect, true);
+      highlightCurrentTurn();
+    });
+    turnSelect.addEventListener('change', highlightCurrentTurn);
+    highlightCurrentTurn();
+  }
+
+  function updateTurnOptionsForPhase(phaseSelect, turnSelect, preserveValue) {
+    if (!phaseSelect || !turnSelect) return;
+    const selectedPhase = phaseSelect.value;
+    const previousValue = preserveValue ? turnSelect.value : null;
+    turnSelect.innerHTML = '';
+    TURN_INFO.forEach((info, idx) => {
+      if (info.phase !== selectedPhase) return;
+      const option = document.createElement('option');
+      option.value = idx + 1;
+      option.textContent = getTurnLabel(idx);
+      turnSelect.appendChild(option);
+    });
+    const matchingOption = Array.from(turnSelect.options).find(opt => opt.value === previousValue);
+    if (matchingOption) {
+      turnSelect.value = previousValue;
+    } else if (turnSelect.options.length > 0) {
+      turnSelect.value = turnSelect.options[0].value;
+    }
+  }
+
+  function buildPlanTable() {
+    const tbody = document.getElementById('plan_body');
+    TURN_INFO.forEach((info, index) => {
+      const actionSelect = document.createElement('select');
+      actionSelect.className = 'turn-row-select';
+      ACTION_OPTIONS.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.value;
+        option.textContent = opt.label;
+        actionSelect.appendChild(option);
+      });
+      actionSelect.value = 'training';
+
+      const participantsSelect = document.createElement('select');
+      participantsSelect.className = 'turn-row-select';
+      for (let i = 0; i <= 4; i += 1) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `${i}人`;
+        if (i === 2) option.selected = true;
+        participantsSelect.appendChild(option);
+      }
+
+      const noteInput = document.createElement('input');
+      noteInput.type = 'text';
+      noteInput.placeholder = '例：ホープフルS';
+      noteInput.className = 'wide-input';
+
+      const resultSpan = document.createElement('div');
+      resultSpan.className = 'result-summary';
+      resultSpan.innerHTML = '基礎: -<br>掘削 砂- 土- 岩-<br>残 砂- 土- 岩-';
+
+      actionSelect.addEventListener('change', () => updatePlanRowState(index));
+
+      const tr = document.createElement('tr');
+      tr.className = 'plan-row';
+      tr.innerHTML = `
+        <td class="turn-label"></td>
+      `;
+      const tdAction = document.createElement('td');
+      tdAction.appendChild(actionSelect);
+      const tdPeople = document.createElement('td');
+      tdPeople.appendChild(participantsSelect);
+      const tdNote = document.createElement('td');
+      tdNote.appendChild(noteInput);
+      const tdResult = document.createElement('td');
+      tdResult.className = 'result-cell';
+      tdResult.appendChild(resultSpan);
+
+      tr.appendChild(tdAction);
+      tr.appendChild(tdPeople);
+      tr.appendChild(tdNote);
+      tr.appendChild(tdResult);
+      tbody.appendChild(tr);
+
+      const turnLabelCell = tr.querySelector('.turn-label');
+
+      planControls.push({
+        rowEl: tr,
+        actionSelect,
+        participantsSelect,
+        noteInput,
+        resultSpan,
+        turnLabelCell,
+        turnIndex: index + 1
+      });
+      if (turnLabelCell) {
+        turnLabelCell.textContent = getTurnLabel(index);
+      }
+      updatePlanRowState(index);
+    });
+    highlightCurrentTurn();
+  }
+
+  function updatePlanRowState(index) {
+    const controls = planControls[index];
+    if (!controls) return;
+    const definition = ACTION_MAP[controls.actionSelect.value];
+    const needsParticipants = Boolean(definition && definition.needsParticipants);
+    controls.participantsSelect.disabled = !needsParticipants;
+    controls.participantsSelect.classList.toggle('disabled-field', !needsParticipants);
+    controls.noteInput.disabled = false;
+    controls.noteInput.classList.remove('disabled-field');
+  }
+
+  function highlightCurrentTurn() {
+    const turnSelect = document.getElementById('current_turn');
+    if (!turnSelect) return;
+    currentTurnValue = parseInt(turnSelect.value, 10) || 1;
+    applyRowVisibility();
+  }
+
+  function applyRowVisibility(forceShowAll = false) {
+    planControls.forEach(ctrl => {
+      if (!ctrl.rowEl) return;
+      const withinFuture = ctrl.turnIndex >= currentTurnValue;
+      const withinCompletion = forceShowAll || !completionTurnIndex || ctrl.turnIndex <= completionTurnIndex;
+      const visible = withinFuture && withinCompletion;
+      ctrl.rowEl.style.display = visible ? '' : 'none';
+      ctrl.rowEl.classList.toggle('current-turn', visible && ctrl.turnIndex === currentTurnValue);
+      if (ctrl.turnLabelCell) {
+        ctrl.turnLabelCell.textContent = getTurnLabel(indexFromTurn(ctrl.turnIndex));
+      }
+    });
+  }
+
+  function indexFromTurn(turn) {
+    return Math.max(0, Math.min(TURN_INFO.length - 1, turn - 1));
+  }
+
+  function getTurnLabel(index) {
+    const info = TURN_INFO[index];
+    const turnNumber = index + 1;
+    if (info.phase === MAKE_DEBUT_PHASE && info.label === MAKE_DEBUT_LABEL) {
+      return `メイクデビュー`;
+    }
+    if (turnNumber < MAKE_DEBUT_INDEX) {
+      const remaining = MAKE_DEBUT_INDEX - turnNumber;
+      return `メイクデビューまであと${remaining}ターン`;
+    }
+    return `${info.phase} ${info.label}`;
+  }
+
+  function isSummerBreakPhaseLabel(phase, label) {
+    return (phase === 'クラシック' || phase === 'シニア') &&
+      (label.startsWith('7月') || label.startsWith('8月'));
+  }
+
+  function isSummerBreakEntry(entry) {
+    return isSummerBreakPhaseLabel(entry.phase, entry.label);
+  }
+
+  function onSpringChange() {
+    const preset = SPRING_PRESETS[document.getElementById('spring_select').value];
+    if (!preset) return;
+    document.getElementById('depth_sand').value = preset.sand;
+    document.getElementById('depth_soil').value = preset.soil;
+    document.getElementById('depth_rock').value = preset.rock;
+  }
+
+  function runCalculation() {
+    setError('');
+    try {
+      const bonuses = calcLayerBonuses();
+      updatePowerOutputs(bonuses);
+
+      const depths = {
+        sand: parseNumber(document.getElementById('depth_sand').value),
+        soil: parseNumber(document.getElementById('depth_soil').value),
+        rock: parseNumber(document.getElementById('depth_rock').value)
+      };
+      if (Object.values(depths).some(v => v < 0)) {
+        throw new Error('地層の残量は0以上を入力してください。');
+      }
+
+      const plan = collectPlan();
+      const adjustedPlan = plan.map((entry, idx) =>
+        idx + 1 < currentTurnValue ? {...entry, skip: true} : entry
+      );
+      const simulation = simulatePlan(adjustedPlan, bonuses, depths);
+      updateSummary(simulation);
+      renderPlanResult(simulation.rows);
+    } catch (err) {
+      setError(err.message || '計算中にエラーが発生しました。');
+    }
+  }
+
+  function setError(message) {
+    document.getElementById('error_message').textContent = message;
+  }
+
+  function parseNumber(value) {
+    const num = parseFloat(value);
+    return Number.isFinite(num) ? num : 0;
+  }
+
+  function calcLayerBonuses() {
+    return LAYERS.reduce((acc, layer) => {
+      const lv = LV_BONUS_MAP[document.getElementById(`lv_${layer}`).value] || 0;
+      const stat = calcStatBonus(layer);
+      const factor = calcFactorBonus(layer);
+      acc[layer] = {lv, stat, factor, total: lv + stat + factor};
+      return acc;
+    }, {});
+  }
+
+  function calcStatBonus(layer) {
+    const impact = EQUIP_STAT_IMPACT[layer];
+    if (!impact) return 0;
+    let total = 0;
+    ['large', 'medium', 'small'].forEach(weight => {
+      (impact[weight] || []).forEach(statKey => {
+        const idx = parseInt(document.getElementById(`stat_${statKey}`).value, 10);
+        const table = STAT_RANK_OPTIONS[idx];
+        if (table) total += table[weight];
+      });
+    });
+    return total;
+  }
+
+  function calcFactorBonus(layer) {
+    let total = 0;
+    Object.entries(FACTOR_BONUS).forEach(([id, layerMap]) => {
+      const count = parseInt(document.getElementById(id).value, 10) || 0;
+      if (layerMap[layer]) total += count * layerMap[layer];
+    });
+    total += LINK_BONUS[layer] || 0;
+    return total;
+  }
+
+  function updatePowerOutputs(bonuses) {
+    LAYERS.forEach(layer => {
+      const info = bonuses[layer];
+      document.getElementById(`out_lv_${layer}`).textContent = formatPercent(info.lv);
+      document.getElementById(`out_stat_${layer}`).textContent = formatPercent(info.stat);
+      document.getElementById(`out_fct_${layer}`).textContent = formatPercent(info.factor);
+      document.getElementById(`out_power_${layer}`).textContent =
+        `${formatPercent(info.total)}（基礎比${(1 + info.total / 100).toFixed(2)}倍）`;
+    });
+  }
+
+  function formatPercent(value) {
+    return `${value >= 0 ? '+' : ''}${value.toFixed(0)}%`;
+  }
+
+  function collectPlan() {
+    return planControls.map((ctrl, idx) => ({
+      turn: idx + 1,
+      phase: TURN_INFO[idx].phase,
+      label: TURN_INFO[idx].label,
+      action: ctrl.actionSelect.value,
+      participants: parseInt(ctrl.participantsSelect.value, 10) || 0,
+      note: ctrl.noteInput.value.trim()
+    }));
+  }
+
+  function simulatePlan(plan, bonuses, depths) {
+    const remaining = {...depths};
+    const rows = [];
+    const completionTurn = {sand: null, soil: null, rock: null};
+
+    plan.forEach(entry => {
+      if (entry.skip) {
+        rows.push({
+          ...entry,
+          baseValue: 0,
+          removed: {sand: 0, soil: 0, rock: 0},
+          remainSnapshot: {...remaining}
+        });
+        return;
+      }
+      const baseValue = getBaseValue(entry);
+      let basePool = baseValue;
+      const removed = {sand: 0, soil: 0, rock: 0};
+
+      LAYERS.forEach(layer => {
+        if (basePool <= 0 || remaining[layer] <= 0) return;
+        const multiplier = 1 + (bonuses[layer].total / 100);
+        if (multiplier <= 0) return;
+
+        const baseNeeded = remaining[layer] / multiplier;
+        if (basePool >= baseNeeded) {
+          removed[layer] += remaining[layer];
+          basePool -= baseNeeded;
+          remaining[layer] = 0;
+          if (!completionTurn[layer]) completionTurn[layer] = entry.turn;
+        } else {
+          const rawRemoval = basePool * multiplier;
+          const digging = Math.floor(rawRemoval);
+          if (digging <= 0) {
+            basePool = 0;
+            return;
+          }
+          removed[layer] += digging;
+          remaining[layer] = Math.max(0, remaining[layer] - digging);
+          basePool = 0;
+          if (remaining[layer] === 0 && !completionTurn[layer]) completionTurn[layer] = entry.turn;
+        }
+      });
+
+      rows.push({
+        ...entry,
+        baseValue,
+        removed,
+        remainSnapshot: {...remaining}
+      });
+    });
+
+    return {rows, completionTurn, remaining};
+  }
+
+  function getBaseValue(entry) {
+    if (isSummerBreakEntry(entry)) {
+      return 0;
+    }
+    if (entry.action === 'training') {
+      const clamped = Math.min(Math.max(entry.participants, 0), 4);
+      return TRAINING_BASE[clamped];
+    }
+    const definition = ACTION_MAP[entry.action];
+    return definition ? definition.base : 0;
+  }
+
+  function updateSummary(simulation) {
+    const finalTurn = Math.max(...Object.values(simulation.completionTurn).map(v => v || 0));
+    const header = document.getElementById('out_plan_header');
+    if (!header) return;
+    header.textContent =
+      finalTurn > 0
+        ? `最も遅い完了ターン: ${finalTurn} / 残量 砂${simulation.remaining.sand.toFixed(1)} 土${simulation.remaining.soil.toFixed(1)} 岩${simulation.remaining.rock.toFixed(1)}`
+        : 'まだどの地層も掘り切れていません。';
+  }
+
+  function renderPlanResult(rows) {
+    completionTurnIndex = null;
+    rows.forEach(row => {
+      const ctrl = planControls[row.turn - 1];
+      if (!ctrl) return;
+      const base = Math.round(row.baseValue);
+      const sand = Math.round(row.removed.sand);
+      const soil = Math.round(row.removed.soil);
+      const rock = Math.round(row.removed.rock);
+      const remainSand = formatRemain(row.remainSnapshot.sand);
+      const remainSoil = formatRemain(row.remainSnapshot.soil);
+      const remainRock = formatRemain(row.remainSnapshot.rock);
+      const info = TURN_INFO[indexFromTurn(ctrl.turnIndex)];
+      const summerBreak = info ? isSummerBreakPhaseLabel(info.phase, info.label) : false;
+      const headerLine = summerBreak ? '掘削停止期間' : `基礎: ${base}`;
+      ctrl.resultSpan.innerHTML = `${headerLine}<br>掘削 砂${sand} 土${soil} 岩${rock}<br>残 砂${remainSand} 土${remainSoil} 岩${remainRock}`;
+      if (!completionTurnIndex && row.remainSnapshot.sand === 0 && row.remainSnapshot.soil === 0 && row.remainSnapshot.rock === 0) {
+        completionTurnIndex = row.turn;
+      }
+    });
+    for (let i = rows.length; i < planControls.length; i += 1) {
+      const ctrl = planControls[i];
+      if (ctrl && ctrl.resultSpan) {
+        ctrl.resultSpan.innerHTML = '基礎: -<br>掘削 砂- 土- 岩-<br>残 砂- 土- 岩-';
+      }
+    }
+    const turnSelect = document.getElementById('current_turn');
+    if (completionTurnIndex && turnSelect) {
+      const currentVal = parseInt(turnSelect.value, 10);
+      if (currentVal > completionTurnIndex) {
+        turnSelect.value = String(completionTurnIndex);
+        currentTurnValue = completionTurnIndex;
+      }
+    }
+    applyRowVisibility();
+  }
+
+  function resetSimulation() {
+    completionTurnIndex = null;
+    planControls.forEach((ctrl, idx) => {
+      if (!ctrl) return;
+      ctrl.actionSelect.value = 'training';
+      ctrl.participantsSelect.value = '2';
+      ctrl.noteInput.value = '';
+      ctrl.resultSpan.innerHTML = '基礎: -<br>掘削 砂- 土- 岩-<br>残 砂- 土- 岩-';
+      ctrl.participantsSelect.disabled = false;
+      ctrl.participantsSelect.classList.remove('disabled-field');
+    });
+    const phaseSelect = document.getElementById('current_phase');
+    const turnSelect = document.getElementById('current_turn');
+    if (phaseSelect) phaseSelect.value = PHASES[0];
+    if (phaseSelect && turnSelect) {
+      updateTurnOptionsForPhase(phaseSelect, turnSelect, false);
+      currentTurnValue = parseInt(turnSelect.value, 10) || 1;
+    } else {
+      currentTurnValue = 1;
+    }
+    applyRowVisibility(true);
+  }
+
+  function getActionLabel(row) {
+    const definition = ACTION_MAP[row.action];
+    if (!definition) return '-';
+    if (definition.needsName && row.note) {
+      return `${definition.label} (${row.note})`;
+    }
+    return definition.label;
+  }
+
+  function formatRemain(value) {
+    return value <= 0 ? '完了' : Math.round(value);
+  }
+</script>
+</body>
+</html>

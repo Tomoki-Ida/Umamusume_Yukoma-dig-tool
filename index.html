@@ -563,6 +563,19 @@
     if (resetButton) {
       resetButton.addEventListener('click', resetSimulation);
     }
+    const bulkApplyButton = document.getElementById('stat_bulk_apply');
+    if (bulkApplyButton) {
+      bulkApplyButton.addEventListener('click', () => {
+        const bulkSelect = document.getElementById('stat_bulk_select');
+        if (!bulkSelect || !bulkSelect.value) return;
+        const selectedIndex = bulkSelect.value;
+        STAT_FIELDS.forEach(field => {
+          const select = document.getElementById(field.id);
+          if (select) select.value = selectedIndex;
+        });
+        runCalculation();
+      });
+    }
     document.querySelectorAll('.link-toggle').forEach(cb => {
       cb.addEventListener('change', () => {
         const layer = cb.dataset.layer;

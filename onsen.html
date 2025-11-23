@@ -163,119 +163,125 @@
       <div>
         <h3>ステータスランク</h3>
         <div class="table-responsive">
-          <table>
-            <tr>
-              <th>ステ</th>
+        <table>
+          <tr>
+            <th>ステ</th>
               <th>ランク</th>
-            </tr>
-            <tr>
-              <td>スピード</td>
+          </tr>
+          <tr>
+            <td>スピード</td>
               <td><select id="stat_spd"></select></td>
-            </tr>
-            <tr>
-              <td>スタミナ</td>
+          </tr>
+          <tr>
+            <td>スタミナ</td>
               <td><select id="stat_sta"></select></td>
-            </tr>
-            <tr>
-              <td>パワー</td>
+          </tr>
+          <tr>
+            <td>パワー</td>
               <td><select id="stat_pow"></select></td>
-            </tr>
-            <tr>
-              <td>根性</td>
+          </tr>
+          <tr>
+            <td>根性</td>
               <td><select id="stat_gut"></select></td>
-            </tr>
-            <tr>
-              <td>賢さ</td>
+          </tr>
+          <tr>
+            <td>賢さ</td>
               <td><select id="stat_int"></select></td>
-            </tr>
-          </table>
+          </tr>
+        </table>
+        </div>
+        <div style="margin-top: 8px;">
+          <select id="stat_bulk_select" style="margin-right: 8px;">
+            <option value="">一括設定</option>
+          </select>
+          <button id="stat_bulk_apply" type="button">一括適用</button>
         </div>
       </div>
 
       <div>
         <h3>青因子枚数（面数）</h3>
         <div class="table-responsive">
-          <table>
-            <tr>
-              <th>因子</th>
-              <th>枚数</th>
+        <table>
+          <tr>
+            <th>因子</th>
+            <th>枚数</th>
               <th>1面あたり補正</th>
-            </tr>
-            <tr>
-              <td>スピード</td>
+          </tr>
+          <tr>
+            <td>スピード</td>
               <td><input type="number" id="fct_spd" min="0" max="6" value="0" /></td>
-              <td class="small-note">砂 +10％ / 土 +6％</td>
-            </tr>
-            <tr>
-              <td>スタミナ</td>
+            <td class="small-note">砂 +10％ / 土 +6％</td>
+          </tr>
+          <tr>
+            <td>スタミナ</td>
               <td><input type="number" id="fct_sta" min="0" max="6" value="0" /></td>
-              <td class="small-note">砂 +3％ / 岩 +3％</td>
-            </tr>
-            <tr>
-              <td>パワー</td>
+            <td class="small-note">砂 +3％ / 岩 +3％</td>
+          </tr>
+          <tr>
+            <td>パワー</td>
               <td><input type="number" id="fct_pow" min="0" max="6" value="0" /></td>
-              <td class="small-note">土 +3％ / 岩 +10％</td>
-            </tr>
-            <tr>
-              <td>根性</td>
+            <td class="small-note">土 +3％ / 岩 +10％</td>
+          </tr>
+          <tr>
+            <td>根性</td>
               <td><input type="number" id="fct_gut" min="0" max="6" value="0" /></td>
-              <td class="small-note">土 +10％</td>
-            </tr>
-            <tr>
-              <td>賢さ</td>
+            <td class="small-note">土 +10％</td>
+          </tr>
+          <tr>
+            <td>賢さ</td>
               <td><input type="number" id="fct_int" min="0" max="6" value="0" /></td>
-              <td class="small-note">砂 +6％ / 岩 +6％</td>
-            </tr>
-          </table>
-        </div>
-        <p id="fct_warning" class="small-note" style="color:#c00; display:none;">青因子合計が6になるよう調整してください。</p>
+            <td class="small-note">砂 +6％ / 岩 +6％</td>
+          </tr>
+        </table>
       </div>
+        <p id="fct_warning" class="small-note" style="color:#c00; display:none;">青因子合計が6になるよう調整してください。</p>
+  </div>
       <div>
         <h3>掘削装備Lv</h3>
         <div class="table-responsive">
-          <table>
-            <tr><th>装備</th><th>Lv</th></tr>
-            <tr>
-              <td>ホールディガー（砂）</td>
-              <td>
-                <select id="lv_sand">
+        <table>
+          <tr><th>装備</th><th>Lv</th></tr>
+          <tr>
+            <td>ホールディガー（砂）</td>
+            <td>
+              <select id="lv_sand">
                   <option value="1">Lv1 (+0%)</option>
                   <option value="2" selected>Lv2 (+30%)</option>
                   <option value="3">Lv3 (+50%)</option>
                   <option value="4">Lv4 (+70%)</option>
                   <option value="5">Lv5 (+100%)</option>
                   <option value="6">Lv6 (+130%)</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>アースドリル（土）</td>
-              <td>
-                <select id="lv_soil">
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>アースドリル（土）</td>
+            <td>
+              <select id="lv_soil">
                   <option value="1">Lv1 (+0%)</option>
                   <option value="2" selected>Lv2 (+30%)</option>
                   <option value="3">Lv3 (+50%)</option>
                   <option value="4">Lv4 (+70%)</option>
                   <option value="5">Lv5 (+100%)</option>
                   <option value="6">Lv6 (+130%)</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>メタルクラウン（岩）</td>
-              <td>
-                <select id="lv_rock">
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>メタルクラウン（岩）</td>
+            <td>
+              <select id="lv_rock">
                   <option value="1">Lv1 (+0%)</option>
                   <option value="2" selected>Lv2 (+30%)</option>
                   <option value="3">Lv3 (+50%)</option>
                   <option value="4">Lv4 (+70%)</option>
                   <option value="5">Lv5 (+100%)</option>
                   <option value="6">Lv6 (+130%)</option>
-                </select>
-              </td>
-            </tr>
-          </table>
-        </div>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
       </div>
       <div>
         <h3>シナリオリンク (+10%)</h3>
@@ -288,34 +294,35 @@
         </div>
       </div>
     </div>
+  </div>
     <div class="table-responsive" style="margin-top:12px;">
       <h3>装備ごとの掘削力</h3>
-      <table>
-        <tr>
-          <th></th>
-          <th>砂（ホールディガー）</th>
-          <th>土（アースドリル）</th>
-          <th>岩（メタルクラウン）</th>
-        </tr>
-        <tr>
-          <td>Lv補正倍率</td>
-          <td id="out_lv_sand">-</td>
-          <td id="out_lv_soil">-</td>
-          <td id="out_lv_rock">-</td>
-        </tr>
-        <tr>
-          <td>ステ補正倍率</td>
-          <td id="out_stat_sand">-</td>
-          <td id="out_stat_soil">-</td>
-          <td id="out_stat_rock">-</td>
-        </tr>
-        <tr>
-          <td>青因子補正倍率</td>
-          <td id="out_fct_sand">-</td>
-          <td id="out_fct_soil">-</td>
-          <td id="out_fct_rock">-</td>
-        </tr>
-        <tr>
+    <table>
+      <tr>
+        <th></th>
+        <th>砂（ホールディガー）</th>
+        <th>土（アースドリル）</th>
+        <th>岩（メタルクラウン）</th>
+      </tr>
+      <tr>
+        <td>Lv補正倍率</td>
+        <td id="out_lv_sand">-</td>
+        <td id="out_lv_soil">-</td>
+        <td id="out_lv_rock">-</td>
+      </tr>
+      <tr>
+        <td>ステ補正倍率</td>
+        <td id="out_stat_sand">-</td>
+        <td id="out_stat_soil">-</td>
+        <td id="out_stat_rock">-</td>
+      </tr>
+      <tr>
+        <td>青因子補正倍率</td>
+        <td id="out_fct_sand">-</td>
+        <td id="out_fct_soil">-</td>
+        <td id="out_fct_rock">-</td>
+      </tr>
+      <tr>
           <td>シナリオリンク補正倍率</td>
           <td id="out_link_sand">-</td>
           <td id="out_link_soil">-</td>
@@ -323,11 +330,11 @@
         </tr>
         <tr>
           <td><b>総合掘削力</b></td>
-          <td id="out_power_sand" class="result-highlight">-</td>
-          <td id="out_power_soil" class="result-highlight">-</td>
-          <td id="out_power_rock" class="result-highlight">-</td>
-        </tr>
-      </table>
+        <td id="out_power_sand" class="result-highlight">-</td>
+        <td id="out_power_soil" class="result-highlight">-</td>
+        <td id="out_power_rock" class="result-highlight">-</td>
+      </tr>
+    </table>
     </div>
     <div class="table-responsive" style="margin-top:12px;">
       <h3>トレーニング人数ごとの掘削量</h3>
@@ -434,18 +441,18 @@
     <div class="table-responsive">
       <table>
         <thead>
-          <tr>
-            <th>ターン</th>
-            <th>行動</th>
+      <tr>
+        <th>ターン</th>
+        <th>行動</th>
             <th>人数</th>
             <th>レース名 / メモ</th>
             <th>源泉変更</th>
             <th>装備Lvアップ</th>
             <th>結果（基礎/掘削/残量）</th>
-          </tr>
+      </tr>
         </thead>
         <tbody id="plan_body"></tbody>
-      </table>
+    </table>
     </div>
     <p class="small-note">
       ※クラシックおよびシニアの7月・8月は掘削量が進みません（行動のみ登録）。
@@ -546,6 +553,10 @@
     setupFactorValidation();
     setupCurrentTurnSelector();
     buildPlanTable();
+    ['lv_sand', 'lv_soil', 'lv_rock'].forEach(id => {
+      const select = document.getElementById(id);
+      if (select) select.value = '2';
+    });
     document.getElementById('spring_select').addEventListener('change', onSpringChange);
     document.getElementById('calc_button').addEventListener('click', runCalculation);
     const resetButton = document.getElementById('reset_button');
@@ -575,6 +586,15 @@
       });
       select.value = String(field.defaultIndex);
     });
+    const bulkSelect = document.getElementById('stat_bulk_select');
+    if (bulkSelect) {
+      STAT_RANK_OPTIONS.forEach((opt, idx) => {
+        const option = document.createElement('option');
+        option.value = idx;
+        option.textContent = opt.label;
+        bulkSelect.appendChild(option);
+      });
+    }
   }
 
   function setupFactorValidation() {
@@ -1122,16 +1142,8 @@
       ctrl.participantsSelect.disabled = false;
       ctrl.participantsSelect.classList.remove('disabled-field');
     });
-    const phaseSelect = document.getElementById('current_phase');
-    const turnSelect = document.getElementById('current_turn');
-    if (phaseSelect) phaseSelect.value = PHASES[0];
-    if (phaseSelect && turnSelect) {
-      updateTurnOptionsForPhase(phaseSelect, turnSelect, false);
-      currentTurnValue = parseInt(turnSelect.value, 10) || 1;
-    } else {
-      currentTurnValue = 1;
-    }
     applyRowVisibility(true);
+    runCalculation();
   }
 
   function getActionLabel(row) {

@@ -120,6 +120,9 @@
     .result-cell {
       min-width: 220px;
     }
+    .turn-label {
+      white-space: nowrap;
+    }
     @media (max-width: 640px) {
       body {
         margin: 8px;
@@ -364,7 +367,6 @@
         <th>ターン</th>
         <th>行動</th>
             <th>人数</th>
-            <th>レース名 / メモ</th>
             <th>源泉変更</th>
             <th>装備Lvアップ</th>
             <th>ステランクアップ</th>
@@ -805,8 +807,6 @@
       tdAction.appendChild(actionSelect);
       const tdPeople = document.createElement('td');
       tdPeople.appendChild(participantsSelect);
-      const tdNote = document.createElement('td');
-      tdNote.appendChild(noteInput);
       const tdSpringChange = document.createElement('td');
       tdSpringChange.appendChild(springChangeSelect);
       const tdEquipLvUp = document.createElement('td');
@@ -819,7 +819,6 @@
 
       tr.appendChild(tdAction);
       tr.appendChild(tdPeople);
-      tr.appendChild(tdNote);
       tr.appendChild(tdSpringChange);
       tr.appendChild(tdEquipLvUp);
       tr.appendChild(tdStatRankUp);

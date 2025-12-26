@@ -766,7 +766,7 @@
       const statRankUpContainer = document.createElement('div');
       statRankUpContainer.className = 'stat-rank-up-container';
       statRankUpContainer.style.display = 'flex';
-      statRankUpContainer.style.flexWrap = 'wrap';
+      statRankUpContainer.style.flexDirection = 'column';
       statRankUpContainer.style.gap = '4px';
       // 各ターンで選択肢を動的に更新するため、ここでは空にしておく
       // 実際の選択肢は計算時に更新される
@@ -840,7 +840,7 @@
         turnIndex: index + 1
       });
       if (turnLabelCell) {
-        turnLabelCell.textContent = getTurnLabel(index);
+        turnLabelCell.innerHTML = getTurnLabel(index);
       }
       updatePlanRowState(index);
       updateSpringChangeVisibility(index);
@@ -1270,7 +1270,7 @@
       ctrl.rowEl.style.display = visible ? '' : 'none';
       ctrl.rowEl.classList.toggle('current-turn', visible && ctrl.turnIndex === currentTurnValue);
       if (ctrl.turnLabelCell) {
-        ctrl.turnLabelCell.textContent = getTurnLabel(indexFromTurn(ctrl.turnIndex));
+        ctrl.turnLabelCell.innerHTML = getTurnLabel(indexFromTurn(ctrl.turnIndex));
       }
     });
   }
@@ -1287,7 +1287,7 @@
     }
     if (turnNumber < MAKE_DEBUT_INDEX && info.phase === MAKE_DEBUT_PHASE) {
       const remaining = MAKE_DEBUT_INDEX - turnNumber;
-      return `メイクデビューまであと${remaining}ターン`;
+      return `メイクデビュー<br>まであと${remaining}ターン`;
     }
     return `${info.phase} ${info.label}`;
   }

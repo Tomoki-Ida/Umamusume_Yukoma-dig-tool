@@ -245,8 +245,8 @@
             <td>ホールディガー（砂）</td>
             <td>
               <select id="lv_sand">
-                  <option value="1">Lv1 (+0%)</option>
-                  <option value="2" selected>Lv2 (+30%)</option>
+                  <option value="1" selected>Lv1 (+0%)</option>
+                  <option value="2">Lv2 (+30%)</option>
                   <option value="3">Lv3 (+50%)</option>
                   <option value="4">Lv4 (+70%)</option>
                   <option value="5">Lv5 (+100%)</option>
@@ -258,8 +258,8 @@
             <td>アースドリル（土）</td>
             <td>
               <select id="lv_soil">
-                  <option value="1">Lv1 (+0%)</option>
-                  <option value="2" selected>Lv2 (+30%)</option>
+                  <option value="1" selected>Lv1 (+0%)</option>
+                  <option value="2">Lv2 (+30%)</option>
                   <option value="3">Lv3 (+50%)</option>
                   <option value="4">Lv4 (+70%)</option>
                   <option value="5">Lv5 (+100%)</option>
@@ -271,8 +271,8 @@
             <td>メタルクラウン（岩）</td>
             <td>
               <select id="lv_rock">
-                  <option value="1">Lv1 (+0%)</option>
-                  <option value="2" selected>Lv2 (+30%)</option>
+                  <option value="1" selected>Lv1 (+0%)</option>
+                  <option value="2">Lv2 (+30%)</option>
                   <option value="3">Lv3 (+50%)</option>
                   <option value="4">Lv4 (+70%)</option>
                   <option value="5">Lv5 (+100%)</option>
@@ -281,6 +281,9 @@
             </td>
           </tr>
         </table>
+      </div>
+      <div style="margin-top: 8px;">
+        <button id="apply_stats_button" type="button">適用</button>
       </div>
       </div>
       <div>
@@ -294,7 +297,6 @@
         </div>
       </div>
     </div>
-  </div>
     <div class="table-responsive" style="margin-top:12px;">
       <h3>装備ごとの掘削力</h3>
     <table>
@@ -336,90 +338,7 @@
       </tr>
     </table>
     </div>
-    <div class="table-responsive" style="margin-top:12px;">
-      <h3>トレーニング人数ごとの掘削量</h3>
-      <table>
-        <tr>
-          <th>人数</th>
-          <th>基礎値</th>
-          <th>砂掘削量</th>
-          <th>土掘削量</th>
-          <th>岩掘削量</th>
-        </tr>
-        <tr>
-          <td>0人</td>
-          <td>25</td>
-          <td id="out_training_sand_0">-</td>
-          <td id="out_training_soil_0">-</td>
-          <td id="out_training_rock_0">-</td>
-        </tr>
-        <tr>
-          <td>1人</td>
-          <td>26</td>
-          <td id="out_training_sand_1">-</td>
-          <td id="out_training_soil_1">-</td>
-          <td id="out_training_rock_1">-</td>
-        </tr>
-        <tr>
-          <td>2人</td>
-          <td>27</td>
-          <td id="out_training_sand_2">-</td>
-          <td id="out_training_soil_2">-</td>
-          <td id="out_training_rock_2">-</td>
-        </tr>
-        <tr>
-          <td>3人</td>
-          <td>28</td>
-          <td id="out_training_sand_3">-</td>
-          <td id="out_training_soil_3">-</td>
-          <td id="out_training_rock_3">-</td>
-        </tr>
-        <tr>
-          <td>4人</td>
-          <td>29</td>
-          <td id="out_training_sand_4">-</td>
-          <td id="out_training_soil_4">-</td>
-          <td id="out_training_rock_4">-</td>
-        </tr>
-      </table>
-    </div>
   </div>
-
-  <!-- 源泉設定 -->
-  <div class="card">
-    <h2>2. 源泉と地層</h2>
-    <div class="flex">
-      <div>
-        <h3>源泉</h3>
-        <select id="spring_select" class="turn-row-select">
-          <option value="shikku">疾駆の湯（砂400）</option>
-          <option value="kennin">堅忍の湯（土400）</option>
-          <option value="meiseki">明晰の湯（岩400）</option>
-          <option value="shunsen">駿閃の古湯（砂300 土150）</option>
-          <option value="goukyaku">剛脚の古湯（砂300 岩150）</option>
-          <option value="kensou">健壮の古湯（土180 岩270）</option>
-          <option value="tenshou">天翔の古湯（土270 岩180）</option>
-          <option value="yukoma">秘湯ゆこま（砂180 土180 岩180）</option>
-          <option value="densetsu">伝説の秘湯（砂90 土90 岩90）</option>
-        </select>
-        <p class="small-note">
-          Game8 の表を参考。
-        </p>
-      </div>
-      <div>
-        <h3>地層の深さ（残り掘削量）</h3>
-        <div class="table-responsive">
-          <table>
-            <tr><th>地層</th><th>深さ</th></tr>
-            <tr><td>砂</td><td><input type="number" id="depth_sand" value="400" /></td></tr>
-            <tr><td>土</td><td><input type="number" id="depth_soil" value="0" /></td></tr>
-            <tr><td>岩</td><td><input type="number" id="depth_rock" value="0" /></td></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ターン別行動プラン -->
   <div class="card">
     <h2>2. 行動プランと掘削進捗</h2>
@@ -448,6 +367,7 @@
             <th>レース名 / メモ</th>
             <th>源泉変更</th>
             <th>装備Lvアップ</th>
+            <th>ステランクアップ</th>
             <th>結果（基礎/掘削/残量）</th>
       </tr>
         </thead>
@@ -479,6 +399,10 @@
     {id: 'stat_gut', defaultIndex: 6},
     {id: 'stat_int', defaultIndex: 6}
   ];
+  
+  // ステータスランクの初期値を保存（リセット時やページ読み込み時の値）
+  let baseStatRanks = {};
+  let baseEquipLvs = {sand: 1, soil: 1, rock: 1};
 
   const EQUIP_STAT_IMPACT = {
     sand: {large: ['spd'], medium: ['int'], small: ['sta']},
@@ -546,7 +470,9 @@
 
   const planControls = [];
   let completionTurnIndex = null;
+  let lastSpringChangeTurnIndex = null; // 源泉変更が選択された最後のターン
   let currentTurnValue = 1;
+  let lastSimulationRows = null;
 
   document.addEventListener('DOMContentLoaded', () => {
     populateStatSelects();
@@ -555,13 +481,55 @@
     buildPlanTable();
     ['lv_sand', 'lv_soil', 'lv_rock'].forEach(id => {
       const select = document.getElementById(id);
-      if (select) select.value = '2';
+      if (select) {
+        select.value = '1'; // デフォルトはLv1
+        const layer = id.replace('lv_', '');
+        baseEquipLvs[layer] = 1; // 初期装備レベルを保存
+        // 装備レベル変更時に、すべての装備レベルアップの選択肢を更新
+        select.addEventListener('change', () => {
+          planControls.forEach(ctrl => {
+            if (ctrl && ctrl.equipLvUpSelect && ctrl.equipLvUpSelect.style.display !== 'none') {
+              updateEquipLvUpOptions(ctrl.equipLvUpSelect);
+            }
+          });
+          // 計算結果を再表示（装備レベルが変更された場合）
+          if (lastSimulationRows && lastSimulationRows.length > 0) {
+            runCalculation();
+          }
+        });
+      }
     });
-    document.getElementById('spring_select').addEventListener('change', onSpringChange);
     document.getElementById('calc_button').addEventListener('click', runCalculation);
     const resetButton = document.getElementById('reset_button');
     if (resetButton) {
       resetButton.addEventListener('click', resetSimulation);
+    }
+    const applyStatsButton = document.getElementById('apply_stats_button');
+    if (applyStatsButton) {
+      applyStatsButton.addEventListener('click', () => {
+        // ステータス、因子、装備レベル、シナリオリンクの変更を適用
+        // 掘削力表を更新
+        const bonuses = calcLayerBonuses();
+        updatePowerOutputs(bonuses);
+        // baseStatRanks を現在のDOMの状態に合わせて更新
+        STAT_FIELDS.forEach(field => {
+          const select = document.getElementById(field.id);
+          if (select) {
+            baseStatRanks[field.id] = parseInt(select.value, 10);
+          }
+        });
+        // baseEquipLvs を現在のDOMの状態に合わせて更新
+        LAYERS.forEach(layer => {
+          const select = document.getElementById(`lv_${layer}`);
+          if (select) {
+            baseEquipLvs[layer] = parseInt(select.value, 10) || 1;
+          }
+        });
+        // 計算を実行
+        if (lastSimulationRows && lastSimulationRows.length > 0) {
+          runCalculation();
+        }
+      });
     }
     const bulkApplyButton = document.getElementById('stat_bulk_apply');
     if (bulkApplyButton) {
@@ -571,7 +539,10 @@
         const selectedIndex = bulkSelect.value;
         STAT_FIELDS.forEach(field => {
           const select = document.getElementById(field.id);
-          if (select) select.value = selectedIndex;
+          if (select) {
+            select.value = selectedIndex;
+            baseStatRanks[field.id] = parseInt(selectedIndex, 10);
+          }
         });
         runCalculation();
       });
@@ -584,7 +555,17 @@
         runCalculation();
       });
     });
-    onSpringChange();
+    
+    // ステータスランクのセレクトボックスの値が変更されたときに baseStatRanks を更新
+    STAT_FIELDS.forEach(field => {
+      const select = document.getElementById(field.id);
+      if (select) {
+        select.addEventListener('change', () => {
+          baseStatRanks[field.id] = parseInt(select.value, 10);
+        });
+      }
+    });
+    
     runCalculation();
   });
 
@@ -598,6 +579,8 @@
         select.appendChild(option);
       });
       select.value = String(field.defaultIndex);
+      // 初期値を保存
+      baseStatRanks[field.id] = field.defaultIndex;
     });
     const bulkSelect = document.getElementById('stat_bulk_select');
     if (bulkSelect) {
@@ -707,22 +690,105 @@
       const springChangeSelect = document.createElement('select');
       springChangeSelect.className = 'turn-row-select';
       springChangeSelect.innerHTML = '<option value="">変更なし</option>';
-      Object.entries(SPRING_PRESETS).forEach(([key, preset]) => {
-        const option = document.createElement('option');
-        option.value = key;
-        const layers = [];
-        if (preset.sand > 0) layers.push(`砂${preset.sand}`);
-        if (preset.soil > 0) layers.push(`土${preset.soil}`);
-        if (preset.rock > 0) layers.push(`岩${preset.rock}`);
-        option.textContent = layers.join(' ');
-        springChangeSelect.appendChild(option);
-      });
+      updateSpringChangeOptions(springChangeSelect, index);
       springChangeSelect.style.display = 'none';
+      springChangeSelect.addEventListener('change', () => {
+        updateSpringChangeOptions(springChangeSelect, index);
+        // 源泉変更を選択した時点で、それ以降のターンの行を表示し、計算を実行
+        if (springChangeSelect.value && springChangeSelect.value !== '') {
+          // 源泉変更が選択されたターンを記録
+          lastSpringChangeTurnIndex = index + 1; // turnIndexは1ベース
+          // 源泉変更を選択したターン以降のすべてのターンを表示
+          planControls.forEach((ctrl, idx) => {
+            if (ctrl && ctrl.rowEl) {
+              if (idx >= index) {
+                ctrl.rowEl.style.display = '';
+              }
+            }
+          });
+          runCalculation();
+        }
+      });
 
       const equipLvUpSelect = document.createElement('select');
       equipLvUpSelect.className = 'turn-row-select';
-      equipLvUpSelect.innerHTML = '<option value="">アップなし</option><option value="sand">ホールディガー（砂）</option><option value="soil">アースドリル（土）</option><option value="rock">メタルクラウン（岩）</option>';
+      equipLvUpSelect.innerHTML = '';
       equipLvUpSelect.style.display = 'none';
+      let previousEquipLvUpValue = '';
+      equipLvUpSelect.addEventListener('change', () => {
+        // 以前の選択を解除する（装備レベルを元に戻す）
+        if (previousEquipLvUpValue && previousEquipLvUpValue !== '') {
+          const prevLayer = previousEquipLvUpValue;
+          const prevLvSelect = document.getElementById(`lv_${prevLayer}`);
+          if (prevLvSelect) {
+            const prevLv = parseInt(prevLvSelect.value, 10) || 1;
+            if (prevLv > 1) {
+              // 装備レベルを1つ下げる
+              prevLvSelect.value = String(prevLv - 1);
+              // 注意: baseEquipLvs は更新しない（計算時にそのターンより前の装備レベルアップのみを適用するため）
+            }
+          }
+        }
+        
+        // 新しい選択を適用する
+        if (equipLvUpSelect.value && equipLvUpSelect.value !== '') {
+          const layer = equipLvUpSelect.value;
+          const currentLvSelect = document.getElementById(`lv_${layer}`);
+          if (currentLvSelect) {
+            const currentLv = parseInt(currentLvSelect.value, 10) || 1;
+            if (currentLv < 6) {
+              const newLv = currentLv + 1;
+              currentLvSelect.value = String(newLv);
+              // 注意: baseEquipLvs は更新しない（計算時にそのターンより前の装備レベルアップのみを適用するため）
+            }
+          }
+        }
+        
+        // 以前の値を更新
+        previousEquipLvUpValue = equipLvUpSelect.value;
+        
+        // 選択肢を更新
+        updateEquipLvUpOptions(equipLvUpSelect);
+        // 他のターンの選択肢も更新
+        planControls.forEach(ctrl => {
+          if (ctrl && ctrl.equipLvUpSelect && ctrl.equipLvUpSelect.style.display !== 'none') {
+            updateEquipLvUpOptions(ctrl.equipLvUpSelect);
+          }
+        });
+        // 計算を実行
+        if (lastSimulationRows && lastSimulationRows.length > 0) {
+          runCalculation();
+        }
+      });
+
+      const statRankUpContainer = document.createElement('div');
+      statRankUpContainer.className = 'stat-rank-up-container';
+      statRankUpContainer.style.display = 'flex';
+      statRankUpContainer.style.flexWrap = 'wrap';
+      statRankUpContainer.style.gap = '4px';
+      // 各ターンで選択肢を動的に更新するため、ここでは空にしておく
+      // 実際の選択肢は計算時に更新される
+      
+      // ステランクアップのチェックボックス変更イベントを監視
+      // 注意: チェックボックスをチェックした時点ではステータスランクを変更しない
+      // 計算時に選択されたチェックボックスに基づいてステータスランクを適用する
+      statRankUpContainer.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox') {
+          // チェックボックスの状態は既に更新されている（e.target.checkedで確認可能）
+          // 重要: そのターンの選択肢は更新しない（ステータスランクの更新は次のターン以降に反映されるため）
+          // 計算を実行（選択肢の更新は計算後に実行される）
+          if (lastSimulationRows && lastSimulationRows.length > 0) {
+            runCalculation();
+          } else {
+            // 計算がまだ実行されていない場合、他のターンの選択肢を更新（そのターンは更新しない）
+            planControls.forEach((ctrl, idx) => {
+              if (ctrl && ctrl.statRankUpContainer && idx !== index) {
+                updateStatRankUpOptions(ctrl.statRankUpContainer, idx);
+              }
+            });
+          }
+        }
+      });
 
       const resultSpan = document.createElement('div');
       resultSpan.className = 'result-summary';
@@ -745,6 +811,8 @@
       tdSpringChange.appendChild(springChangeSelect);
       const tdEquipLvUp = document.createElement('td');
       tdEquipLvUp.appendChild(equipLvUpSelect);
+      const tdStatRankUp = document.createElement('td');
+      tdStatRankUp.appendChild(statRankUpContainer);
       const tdResult = document.createElement('td');
       tdResult.className = 'result-cell';
       tdResult.appendChild(resultSpan);
@@ -754,6 +822,7 @@
       tr.appendChild(tdNote);
       tr.appendChild(tdSpringChange);
       tr.appendChild(tdEquipLvUp);
+      tr.appendChild(tdStatRankUp);
       tr.appendChild(tdResult);
       tbody.appendChild(tr);
 
@@ -766,6 +835,7 @@
         noteInput,
         springChangeSelect,
         equipLvUpSelect,
+        statRankUpContainer,
         resultSpan,
         turnLabelCell,
         turnIndex: index + 1
@@ -775,8 +845,359 @@
       }
       updatePlanRowState(index);
       updateSpringChangeVisibility(index);
+      // ステランクアップの選択肢を初期化
+      // ただし、そのターンで既に選択されているステータスランクアップがある場合は更新しない
+      if (planControls[index] && planControls[index].statRankUpContainer) {
+        const container = planControls[index].statRankUpContainer;
+        const hasSelected = container.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+        if (!hasSelected) {
+          updateStatRankUpOptions(container, index);
+        }
+      }
     });
     highlightCurrentTurn();
+  }
+
+  function updateStatRankUpOptions(container, turnIndex) {
+    // 各ステータスの現在のランクを取得し、1つ上のランクだけをチェックボックスとして追加
+    
+    // ステップ1: そのターンで既に選択されているステータスランクアップを取得
+    // これは、そのターンの選択肢を更新しないようにするために使用する
+    const selectedStatRankUps = new Set();
+    container.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+      selectedStatRankUps.add(cb.value);
+    });
+    
+    // そのターンで既に選択されているステータスランクアップがある場合は、そのターンの選択肢を更新しない
+    if (selectedStatRankUps.size > 0) {
+      return; // そのターンの選択肢を更新しない
+    }
+    
+    // ステップ2: 既存のチェックボックスの状態を保存（削除する前に取得）
+    // changeイベントが発生した時点で、チェックボックスのcheckedプロパティは既に更新されている
+    const checkedValues = new Set();
+    const existingCheckboxes = new Map(); // value -> checkbox要素のマップ
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      existingCheckboxes.set(cb.value, cb);
+      if (cb.checked) {
+        checkedValues.add(cb.value);
+      }
+    });
+    
+    // 既存のチェックボックスをすべて削除（順序を正しく保つため）
+    container.innerHTML = '';
+    
+    // ステップ3: 必要なチェックボックスを生成（STAT_FIELDSの順序に従って）
+    STAT_FIELDS.forEach(field => {
+      const statSelect = document.getElementById(field.id);
+      if (!statSelect) return;
+      
+      // 現在のステータスランクを基準にする
+      // 注意: この時点で、ステータスランクは既に更新されている必要がある
+      const currentRankIndex = parseInt(statSelect.value, 10);
+      
+      if (isNaN(currentRankIndex)) return;
+      
+      // 現在のランクが最高ランク（インデックス0）の場合はスキップ
+      if (currentRankIndex > 0) {
+        const nextRankIndex = currentRankIndex - 1; // 1つ上のランク（インデックスが小さい方が高いランク）
+        const nextRank = STAT_RANK_OPTIONS[nextRankIndex];
+        if (nextRank) {
+          const checkboxValue = `${field.id}:${nextRankIndex}`;
+          
+          // 新しいチェックボックスを生成（STAT_FIELDSの順序に従って）
+          const statName = field.id.replace('stat_', '');
+          const statLabel = statName === 'spd' ? 'スピード' : statName === 'sta' ? 'スタミナ' : statName === 'pow' ? 'パワー' : statName === 'gut' ? '根性' : '賢さ';
+          const label = document.createElement('label');
+          label.style.display = 'flex';
+          label.style.alignItems = 'center';
+          label.style.gap = '4px';
+          label.style.fontSize = '12px';
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = checkboxValue;
+          checkbox.checked = checkedValues.has(checkboxValue);
+          // 数値範囲（括弧内）を削除
+          const rankLabelWithoutRange = nextRank.label.replace(/\s*\([^)]*\)\s*/, '');
+          const text = document.createTextNode(`${statLabel}: ${rankLabelWithoutRange}`);
+          label.appendChild(checkbox);
+          label.appendChild(text);
+          container.appendChild(label);
+        }
+      }
+    });
+    
+    // ステップ4: 不要になったチェックボックスを削除
+    // 現在のステータスランクより高いランク（インデックスが小さい）のチェックボックスを削除
+    // また、現在のステータスランクと同じランクのチェックボックスも削除（次のランクアップは現在のランクより1つ上のみ）
+    // 注意: この時点で、ステータスランクは既に更新されている必要がある
+    const currentCheckboxes = new Map();
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      currentCheckboxes.set(cb.value, cb);
+    });
+    
+    STAT_FIELDS.forEach(field => {
+      const statSelect = document.getElementById(field.id);
+      if (!statSelect) return;
+      const currentRankIndex = parseInt(statSelect.value, 10);
+      
+      if (isNaN(currentRankIndex)) return;
+      
+      // 現在のランクより高いランク（インデックスが小さい）のチェックボックスを削除
+      for (let rankIndex = 0; rankIndex < currentRankIndex - 1; rankIndex += 1) {
+        const checkboxValue = `${field.id}:${rankIndex}`;
+        const existingCheckbox = currentCheckboxes.get(checkboxValue);
+        if (existingCheckbox) {
+          const label = existingCheckbox.closest('label');
+          if (label && label.parentNode === container) {
+            container.removeChild(label);
+          }
+        }
+      }
+      
+      // 現在のランクと同じランクのチェックボックスも削除（次のランクアップは現在のランクより1つ上のみ）
+      const currentRankCheckboxValue = `${field.id}:${currentRankIndex}`;
+      const currentRankCheckbox = currentCheckboxes.get(currentRankCheckboxValue);
+      if (currentRankCheckbox) {
+        const label = currentRankCheckbox.closest('label');
+        if (label && label.parentNode === container) {
+          container.removeChild(label);
+        }
+      }
+      
+      // 現在のランクより2つ以上低いランク（インデックスが大きい）のチェックボックスも削除
+      // 次のランクアップは現在のランクより1つ上のみ表示する
+      for (let rankIndex = currentRankIndex + 1; rankIndex < STAT_RANK_OPTIONS.length; rankIndex += 1) {
+        const checkboxValue = `${field.id}:${rankIndex}`;
+        const existingCheckbox = currentCheckboxes.get(checkboxValue);
+        if (existingCheckbox) {
+          const label = existingCheckbox.closest('label');
+          if (label && label.parentNode === container) {
+            container.removeChild(label);
+          }
+        }
+      }
+    });
+  }
+
+  function updateSpringChangeOptions(select, turnIndex) {
+    // そのターン開始時の残量を取得（源泉変更はそのターンの計算前に適用されるため）
+    let remaining = {sand: 0, soil: 0, rock: 0};
+    
+    // 計算結果から残量を取得（もしあれば）
+    if (lastSimulationRows && lastSimulationRows.length > 0) {
+      // そのターン開始時の残量を取得（源泉変更はそのターンの計算前に適用されるため）
+      // turnIndexは0ベース、row.turnは1ベースなので、前のターン（turnIndex）の残量を使用
+      // つまり、row.turn === turnIndex の行の残量を使用（そのターンの前のターン）
+      if (turnIndex > 0) {
+        // 前のターン（turnIndex）の残量を取得
+        // turnIndexは0ベースなので、前のターンは turnIndex（row.turn === turnIndex + 1 の前）
+        const prevRow = lastSimulationRows.find(row => row.turn === turnIndex);
+        if (prevRow && prevRow.remainSnapshot) {
+          remaining = {
+            sand: Number(prevRow.remainSnapshot.sand) || 0,
+            soil: Number(prevRow.remainSnapshot.soil) || 0,
+            rock: Number(prevRow.remainSnapshot.rock) || 0
+          };
+        } else {
+          // 見つからない場合は、そのターンより前の最後の行の残量を使用
+          const prevRows = lastSimulationRows.filter(row => row.turn < turnIndex + 1);
+          if (prevRows.length > 0) {
+            const lastPrevRow = prevRows[prevRows.length - 1];
+            if (lastPrevRow && lastPrevRow.remainSnapshot) {
+              remaining = {
+                sand: Number(lastPrevRow.remainSnapshot.sand) || 0,
+                soil: Number(lastPrevRow.remainSnapshot.soil) || 0,
+                rock: Number(lastPrevRow.remainSnapshot.rock) || 0
+              };
+            }
+          }
+        }
+      } else {
+        // 最初のターン（turnIndex === 0）の場合は、最初のターンの源泉変更から取得
+        if (planControls.length > 0 && planControls[0].springChangeSelect) {
+          const firstSpringValue = planControls[0].springChangeSelect.value;
+          if (firstSpringValue && firstSpringValue !== '') {
+            const preset = SPRING_PRESETS[firstSpringValue];
+            if (preset) {
+              remaining = {...preset};
+            }
+          } else {
+            // 源泉変更が選択されていない場合はデフォルト（疾駆の湯）
+            remaining = {...SPRING_PRESETS.shikku};
+          }
+        } else {
+          // デフォルト（疾駆の湯）
+          remaining = {...SPRING_PRESETS.shikku};
+        }
+      }
+    } else {
+      // 初期源泉の残量を取得（最初のターンの源泉変更から）
+      if (planControls.length > 0 && planControls[0].springChangeSelect) {
+        const firstSpringValue = planControls[0].springChangeSelect.value;
+        if (firstSpringValue && firstSpringValue !== '') {
+          const preset = SPRING_PRESETS[firstSpringValue];
+          if (preset) {
+            remaining = {...preset};
+          }
+        } else {
+          // 源泉変更が選択されていない場合はデフォルト（疾駆の湯）
+          remaining = {...SPRING_PRESETS.shikku};
+        }
+      } else {
+        // デフォルト（疾駆の湯）
+        remaining = {...SPRING_PRESETS.shikku};
+      }
+    }
+    
+    // 現在使用している源泉を特定（最初のターン以外）
+    let currentSpringKey = '';
+    if (turnIndex > 0) {
+      // それ以外のターンは、計算結果から取得
+      if (lastSimulationRows && lastSimulationRows.length > 0) {
+        // そのターンより前の最後の源泉変更を確認
+        const prevRows = lastSimulationRows.filter(row => row.turn <= turnIndex);
+        for (let i = prevRows.length - 1; i >= 0; i -= 1) {
+          if (prevRows[i].springChange && prevRows[i].springChange !== '') {
+            currentSpringKey = prevRows[i].springChange;
+            break;
+          }
+        }
+      }
+      // 源泉変更がない場合は、最初のターンの源泉変更から取得
+      if (!currentSpringKey) {
+        if (planControls.length > 0 && planControls[0].springChangeSelect) {
+          const firstSpringValue = planControls[0].springChangeSelect.value;
+          if (firstSpringValue && firstSpringValue !== '') {
+            currentSpringKey = firstSpringValue;
+          }
+        }
+      }
+    }
+    // 最初のターンの場合は、現在選択されている源泉を除外しない（すべての源泉を選択可能）
+    
+    // 選択肢をクリアして再構築
+    const currentValue = select.value;
+    select.innerHTML = '<option value="">変更なし</option>';
+    
+    // 現在のターン情報を取得
+    const turnInfo = TURN_INFO[turnIndex];
+    const phase = turnInfo ? turnInfo.phase : '';
+    const label = turnInfo ? turnInfo.label : '';
+    
+    // 段階的な解放ロジック
+    const getAvailableSprings = () => {
+      const allSprings = [
+        {value: 'shikku', label: '疾駆の湯（砂400）', phase: 'ジュニア'},
+        {value: 'kennin', label: '堅忍の湯（土400）', phase: 'ジュニア'},
+        {value: 'meiseki', label: '明晰の湯（岩400）', phase: 'ジュニア'},
+        {value: 'tenshou', label: '天翔の古湯（土270 岩180）', phase: 'クラシック'},
+        {value: 'kensou', label: '健壮の古湯（土180 岩270）', phase: 'クラシック'},
+        {value: 'shunsen', label: '駿閃の古湯（砂300 土150）', phase: 'クラシック'},
+        {value: 'goukyaku', label: '剛脚の古湯（砂300 岩150）', phase: 'クラシック'},
+        {value: 'yukoma', label: '秘湯ゆこま（砂180 土180 岩180）', phase: 'シニア1月前半'},
+        {value: 'densetsu', label: '伝説の秘湯（砂90 土90 岩90）', phase: 'シニア9月後半'}
+      ];
+      
+      let availableSprings = [];
+      
+      // ジュニア：疾駆、堅忍、明晰のみ
+      if (phase === 'ジュニア') {
+        availableSprings = allSprings.filter(s => s.phase === 'ジュニア');
+      }
+      // クラシック：ジュニアの3つ + 天翔、健壮、駿閃、剛脚
+      else if (phase === 'クラシック') {
+        availableSprings = allSprings.filter(s => s.phase === 'ジュニア' || s.phase === 'クラシック');
+      }
+      // シニア1月前半まで：クラシックまで + 秘湯ゆこま
+      else if (phase === 'シニア' && label === '1月前半') {
+        availableSprings = allSprings.filter(s => s.phase === 'ジュニア' || s.phase === 'クラシック' || s.phase === 'シニア1月前半');
+      }
+      // シニア9月後半以降：すべて
+      else if (phase === 'シニア' && (label === '9月後半' || TURN_INFO.findIndex(t => t.phase === 'シニア' && t.label === '9月後半') < turnIndex)) {
+        availableSprings = allSprings;
+      }
+      // シニア1月後半～9月前半：クラシックまで + 秘湯ゆこま
+      else if (phase === 'シニア') {
+        availableSprings = allSprings.filter(s => s.phase === 'ジュニア' || s.phase === 'クラシック' || s.phase === 'シニア1月前半');
+      }
+      
+      return availableSprings;
+    };
+    
+    const availableSprings = getAvailableSprings();
+    
+    // 掘り終わった源泉を除外
+    const isCompleted = (springValue) => {
+      // 現在使用している源泉が完全に掘り終わっているかチェック
+      if (springValue === currentSpringKey && currentSpringKey) {
+        const preset = SPRING_PRESETS[currentSpringKey];
+        if (!preset) return false;
+        
+        // 現在の源泉が完全に掘り終わっている場合（すべての層が0）
+        // ただし、源泉が持つ層のみをチェック
+        const hasSand = preset.sand > 0;
+        const hasSoil = preset.soil > 0;
+        const hasRock = preset.rock > 0;
+        
+        const sandCompleted = !hasSand || remaining.sand === 0;
+        const soilCompleted = !hasSoil || remaining.soil === 0;
+        const rockCompleted = !hasRock || remaining.rock === 0;
+        
+        // すべての層が完了している場合、この源泉は除外
+        return sandCompleted && soilCompleted && rockCompleted;
+      }
+      return false;
+    };
+    
+    availableSprings.forEach(opt => {
+      // 現在使用している源泉を除外（最初のターン以外）
+      // また、掘り終わった源泉も除外
+      if ((turnIndex === 0 || opt.value !== currentSpringKey) && !isCompleted(opt.value)) {
+        const option = document.createElement('option');
+        option.value = opt.value;
+        option.textContent = opt.label;
+        select.appendChild(option);
+      }
+    });
+    
+    // 以前の値を復元
+    if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+      select.value = currentValue;
+    }
+  }
+
+  function updateEquipLvUpOptions(select) {
+    const currentValue = select.value;
+    select.innerHTML = '';
+    
+    const equipOptions = [
+      {value: 'sand', label: 'ホールディガー（砂）', id: 'lv_sand'},
+      {value: 'soil', label: 'アースドリル（土）', id: 'lv_soil'},
+      {value: 'rock', label: 'メタルクラウン（岩）', id: 'lv_rock'}
+    ];
+    
+    equipOptions.forEach(opt => {
+      const lvSelect = document.getElementById(opt.id);
+      if (!lvSelect) return;
+      const currentLv = parseInt(lvSelect.value, 10) || 1;
+      // 最大レベル（6）の場合は選択肢に追加しない
+      if (currentLv < 6) {
+        const nextLv = currentLv + 1;
+        const option = document.createElement('option');
+        option.value = opt.value;
+        option.textContent = `${opt.label} Lv${currentLv}→Lv${nextLv}`;
+        select.appendChild(option);
+      }
+    });
+    
+    // 以前の値を復元（選択肢が存在する場合のみ）
+    if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+      select.value = currentValue;
+    } else {
+      // 選択肢がない、または以前の値が存在しない場合は空にする
+      select.value = '';
+    }
   }
 
   function updateSpringChangeVisibility(index) {
@@ -784,18 +1205,29 @@
     if (!controls) return;
     const info = TURN_INFO[index];
     
-    // 特定のターン（クラシック1月前半、シニア1月後半、シニア9月後半）で表示
+    // メイクデビューまであと9ターン（最初のターン）で表示
+    const isFirstTurn = index === 0;
+    
+    // 特定のターン（クラシック1月前半、シニア1月前半、シニア9月後半）で表示
     const isSpecialTurn = 
       (info.phase === 'クラシック' && info.label === '1月前半') ||
-      (info.phase === 'シニア' && info.label === '1月後半') ||
+      (info.phase === 'シニア' && info.label === '1月前半') ||
       (info.phase === 'シニア' && info.label === '9月後半');
     
-    // 掘削完了の次のターンで表示（後で実装）
-    const showSpringChange = isSpecialTurn;
-    const showEquipLvUp = isSpecialTurn;
+    // 掘削完了のターンでも表示（計算後に動的に更新される）
+    const showSpringChange = isFirstTurn || isSpecialTurn;
+    const showEquipLvUp = isFirstTurn || isSpecialTurn;
     
     controls.springChangeSelect.style.display = showSpringChange ? '' : 'none';
     controls.equipLvUpSelect.style.display = showEquipLvUp ? '' : 'none';
+    
+    // 選択肢を更新
+    if (showSpringChange && controls.springChangeSelect) {
+      updateSpringChangeOptions(controls.springChangeSelect, index);
+    }
+    if (showEquipLvUp && controls.equipLvUpSelect) {
+      updateEquipLvUpOptions(controls.equipLvUpSelect);
+    }
   }
 
   function updatePlanRowState(index) {
@@ -820,7 +1252,21 @@
     planControls.forEach(ctrl => {
       if (!ctrl.rowEl) return;
       const withinFuture = ctrl.turnIndex >= currentTurnValue;
-      const withinCompletion = forceShowAll || !completionTurnIndex || ctrl.turnIndex <= completionTurnIndex;
+      // 計算前は最初のターンのみ表示、計算後は掘り切るまでのターンを表示
+      let withinCompletion = true;
+      if (forceShowAll) {
+        withinCompletion = true;
+      } else if (lastSpringChangeTurnIndex && ctrl.turnIndex >= lastSpringChangeTurnIndex) {
+        // 源泉変更が選択されている場合：そのターン以降はすべて表示（新しい源泉での掘削が完了するまで）
+        // completionTurnIndexの制約を無視して、源泉変更後のターンはすべて表示
+        withinCompletion = true;
+      } else if (completionTurnIndex) {
+        // 計算後：掘り切るまでのターンを表示
+        withinCompletion = ctrl.turnIndex <= completionTurnIndex;
+      } else {
+        // 計算前：最初のターンのみ表示
+        withinCompletion = ctrl.turnIndex === 1;
+      }
       const visible = withinFuture && withinCompletion;
       ctrl.rowEl.style.display = visible ? '' : 'none';
       ctrl.rowEl.classList.toggle('current-turn', visible && ctrl.turnIndex === currentTurnValue);
@@ -856,36 +1302,61 @@
     return isSummerBreakPhaseLabel(entry.phase, entry.label);
   }
 
-  function onSpringChange() {
-    const preset = SPRING_PRESETS[document.getElementById('spring_select').value];
-    if (!preset) return;
-    document.getElementById('depth_sand').value = preset.sand;
-    document.getElementById('depth_soil').value = preset.soil;
-    document.getElementById('depth_rock').value = preset.rock;
-  }
-
   function runCalculation() {
     setError('');
     try {
       const bonuses = calcLayerBonuses();
-      updatePowerOutputs(bonuses);
 
+      // 最初のターン（メイクデビューまであと9ターン）の源泉変更から初期源泉を取得
+      if (planControls.length === 0 || !planControls[0].springChangeSelect) {
+        return; // まだ初期化されていない場合は計算をスキップ
+      }
+      const firstSpringValue = planControls[0].springChangeSelect.value;
+      if (!firstSpringValue || firstSpringValue === '') {
+        return; // 最初のターンで源泉変更が選択されていない場合は計算をスキップ
+      }
+      const initialPreset = SPRING_PRESETS[firstSpringValue];
+      if (!initialPreset) {
+        return; // 無効な源泉の場合は計算をスキップ
+      }
+      
       const depths = {
-        sand: parseNumber(document.getElementById('depth_sand').value),
-        soil: parseNumber(document.getElementById('depth_soil').value),
-        rock: parseNumber(document.getElementById('depth_rock').value)
+        sand: initialPreset.sand,
+        soil: initialPreset.soil,
+        rock: initialPreset.rock
       };
       if (Object.values(depths).some(v => v < 0)) {
         throw new Error('地層の残量は0以上を入力してください。');
       }
 
       const plan = collectPlan();
-      const adjustedPlan = plan.map((entry, idx) =>
-        idx + 1 < currentTurnValue ? {...entry, skip: true} : entry
-      );
+      // 源泉変更が選択されている最初のターンを特定
+      let firstSpringChangeTurn = null;
+      for (let i = 0; i < plan.length; i += 1) {
+        if (plan[i].springChange && plan[i].springChange !== '') {
+          firstSpringChangeTurn = i + 1; // turnは1ベース
+          break;
+        }
+      }
+      // 源泉変更が選択されているターン以降も計算対象にする
+      const adjustedPlan = plan.map((entry, idx) => {
+        const turn = idx + 1;
+        if (turn < currentTurnValue) {
+          // 現在ターンより前はスキップ
+          return {...entry, skip: true};
+        } else if (firstSpringChangeTurn && turn >= firstSpringChangeTurn) {
+          // 源泉変更が選択されているターン以降は計算対象
+          return entry;
+        } else {
+          // 現在ターン以降は計算対象
+          return entry;
+        }
+      });
       const simulation = simulatePlan(adjustedPlan, bonuses, depths);
       updateSummary(simulation);
+      lastSimulationRows = simulation.rows;
       renderPlanResult(simulation.rows);
+      // 注意: ステランクアップ選択肢の更新は、simulatePlan内で既に実行されている
     } catch (err) {
       setError(err.message || '計算中にエラーが発生しました。');
     }
@@ -944,15 +1415,6 @@
       document.getElementById(`out_power_${layer}`).textContent =
         `${formatPercent(info.total)}（基礎比${(1 + info.total / 100).toFixed(2)}倍）`;
     });
-    
-    // 人数ごとの掘削量を計算
-    TRAINING_BASE.forEach((base, people) => {
-      LAYERS.forEach(layer => {
-        const multiplier = 1 + (bonuses[layer].total / 100);
-        const digging = Math.floor(base * multiplier);
-        document.getElementById(`out_training_${layer}_${people}`).textContent = digging;
-      });
-    });
   }
 
   function formatPercent(value) {
@@ -968,7 +1430,8 @@
       participants: parseInt(ctrl.participantsSelect.value, 10) || 0,
       note: ctrl.noteInput.value.trim(),
       springChange: ctrl.springChangeSelect ? ctrl.springChangeSelect.value : '',
-      equipLvUp: ctrl.equipLvUpSelect ? ctrl.equipLvUpSelect.value : ''
+      equipLvUp: ctrl.equipLvUpSelect ? ctrl.equipLvUpSelect.value : '',
+      statRankUp: ctrl.statRankUpContainer ? Array.from(ctrl.statRankUpContainer.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value).join(',') : ''
     }));
   }
 
@@ -978,7 +1441,7 @@
     const completionTurn = {sand: null, soil: null, rock: null};
     let currentBonuses = {...bonuses};
     let allCompleted = false;
-
+    
     plan.forEach((entry, idx) => {
       if (entry.skip) {
         rows.push({
@@ -990,8 +1453,79 @@
         return;
       }
 
-      // 源泉変更の処理
-      if (entry.springChange && entry.springChange !== '') {
+      // このターン時点でのステータスランクを計算（そのターンより前のターンで選択されたステータスランクアップのみを適用）
+      // 重要: 各ターンの計算時には、そのターンより前のターンで選択されたステータスランクアップのみを適用する
+      const tempStatRanks = {...baseStatRanks};
+      for (let i = 0; i < idx; i += 1) {
+        const prevEntry = plan[i];
+        if (prevEntry && prevEntry.statRankUp && prevEntry.statRankUp !== '') {
+          const statRankUps = prevEntry.statRankUp.split(',').filter(s => s.trim() !== '');
+          statRankUps.forEach(statRankUp => {
+            const [statId, rankIndex] = statRankUp.split(':');
+            const targetRankIndex = parseInt(rankIndex, 10);
+            const currentRankIndex = tempStatRanks[statId];
+            // ターゲットランクが現在のランクより高い場合のみ適用
+            if (currentRankIndex !== undefined && targetRankIndex < currentRankIndex) {
+              tempStatRanks[statId] = targetRankIndex;
+            }
+          });
+        }
+      }
+
+      // このターン時点での装備レベルを計算（そのターンより前のターンで選択された装備レベルアップのみを適用）
+      // 重要: 各ターンの計算時には、そのターンより前のターンで選択された装備レベルアップのみを適用する
+      const tempEquipLvs = {...baseEquipLvs};
+      // そのターンより前のターンで選択された装備レベルアップを適用
+      for (let i = 0; i < idx; i += 1) {
+        const prevEntry = plan[i];
+        if (prevEntry && prevEntry.equipLvUp && prevEntry.equipLvUp !== '') {
+          const layer = prevEntry.equipLvUp;
+          if (tempEquipLvs[layer] !== undefined && tempEquipLvs[layer] < 6) {
+            tempEquipLvs[layer] += 1;
+          }
+        }
+      }
+
+      // 前のターンで掘削が完了していたかチェック
+      const prevCompleted = idx > 0 && !allCompleted && (() => {
+        const prevRemain = rows[rows.length - 1]?.remainSnapshot || remaining;
+        return prevRemain.sand === 0 && prevRemain.soil === 0 && prevRemain.rock === 0;
+      })();
+
+      // 最初のターン、特定ターン、または掘削完了のターンかチェック
+      const isFirstTurn = entry.turn === 1;
+      const info = TURN_INFO[idx];
+      const isSpecialTurn = 
+        (info.phase === 'クラシック' && info.label === '1月前半') ||
+        (info.phase === 'シニア' && info.label === '1月前半') ||
+        (info.phase === 'シニア' && info.label === '9月後半');
+      const canChangeSpring = isFirstTurn || isSpecialTurn || prevCompleted;
+
+      // このターン時点でのステータスランクと装備レベルを使用してボーナスを計算
+      // 重要: そのターンより前のターンで選択されたステータスランクアップと装備レベルアップのみを適用
+      const currentBonuses = calcLayerBonusesWithTempRanksAndEquipLvs(tempStatRanks, tempEquipLvs);
+
+      // 装備レベルアップの処理（特定ターンまたは掘削完了のターンで適用）
+      // 注意: 装備レベルアップは計算時に適用せず、ユーザーが選択した時点で適用される
+      // ここでは計算に使用するボーナスのみを更新（装備レベルは既に適用済みと仮定）
+      // 重要: ステータスランクアップの適用後に装備レベルアップを処理することで、正しいボーナスを計算できる
+      // 装備レベルアップが選択されている場合は、そのターンで装備レベルを1つ上げてボーナスを再計算
+      // 重要: 装備レベルアップは canChangeSpring が true の場合のみ選択可能だが、
+      // そのターンで選択された装備レベルアップはそのターンの計算に反映される
+      if (entry.equipLvUp && entry.equipLvUp !== '') {
+        const layer = entry.equipLvUp;
+        const updatedEquipLvs = {...tempEquipLvs};
+        if (updatedEquipLvs[layer] !== undefined && updatedEquipLvs[layer] < 6) {
+          updatedEquipLvs[layer] += 1;
+        }
+        // ボーナスを再計算（装備レベルを1つ上げた状態、ステータスランクも更新済み）
+        const updatedBonuses = calcLayerBonusesWithTempRanksAndEquipLvs(tempStatRanks, updatedEquipLvs);
+        Object.assign(currentBonuses, updatedBonuses);
+      }
+
+      // 源泉変更の処理（最初のターン、特定ターン、または掘削完了のターンで適用）
+      // 重要: 装備レベルアップの処理の後に源泉変更を処理することで、正しいボーナスで計算できる
+      if (canChangeSpring && entry.springChange && entry.springChange !== '') {
         const preset = SPRING_PRESETS[entry.springChange];
         if (preset) {
           remaining.sand = preset.sand;
@@ -1000,33 +1534,8 @@
         }
       }
 
-      // 装備レベルアップの処理
-      if (entry.equipLvUp && entry.equipLvUp !== '') {
-        const layer = entry.equipLvUp;
-        const currentLvSelect = document.getElementById(`lv_${layer}`);
-        if (currentLvSelect) {
-          const currentLv = parseInt(currentLvSelect.value, 10) || 1;
-          const newLv = Math.min(6, currentLv + 1);
-          currentLvSelect.value = String(newLv);
-          // ボーナスを再計算
-          currentBonuses = calcLayerBonuses();
-        }
-      }
-
-      // 掘削完了チェック（前のターンで完了していた場合）
-      if (idx > 0 && !allCompleted) {
-        const prevRemain = rows[rows.length - 1]?.remainSnapshot || remaining;
-        if (prevRemain.sand === 0 && prevRemain.soil === 0 && prevRemain.rock === 0) {
-          allCompleted = true;
-          // 次のターンに源泉変更UIを表示
-          if (idx < planControls.length) {
-            const nextCtrl = planControls[idx];
-            if (nextCtrl && nextCtrl.springChangeSelect) {
-              nextCtrl.springChangeSelect.style.display = '';
-              nextCtrl.equipLvUpSelect.style.display = '';
-            }
-          }
-        }
+      if (prevCompleted) {
+        allCompleted = true;
       }
 
       const baseValue = getBaseValue(entry);
@@ -1065,8 +1574,132 @@
         remainSnapshot: {...remaining}
       });
     });
+    
+    // 計算終了後に、すべてのステータスランクアップを順番に適用してDOMを更新
+    // 各ターンで選択されているステータスランクアップを、その次のターン以降で適用
+    // 注意: 順番に適用する必要がある（前のターンで適用されたステータスランクアップが、次のターンの基準になる）
+    // 重要: 各ターンでステータスランクを更新した後、そのターン以降の選択肢を更新する
+    
+    // まず、すべてのステータスランクを初期値に戻す（baseStatRanks から取得）
+    STAT_FIELDS.forEach(field => {
+      const statSelect = document.getElementById(field.id);
+      if (statSelect && baseStatRanks[field.id] !== undefined) {
+        statSelect.value = String(baseStatRanks[field.id]);
+      }
+    });
+    
+    // 計算中に使用した tempStatRanks を初期化（計算終了後のDOM更新用）
+    const finalStatRanks = {...baseStatRanks};
+    
+    plan.forEach((entry, idx) => {
+      if (entry.statRankUp && entry.statRankUp !== '') {
+        // そのターンで選択されているステータスランクアップを、その次のターン以降で適用
+        // つまり、このターンで選択されたステータスランクアップは、次のターン以降で有効になる
+        const statRankUps = entry.statRankUp.split(',').filter(s => s.trim() !== '');
+        statRankUps.forEach(statRankUp => {
+          const parts = statRankUp.split(':');
+          if (parts.length === 2) {
+            const statId = parts[0].trim();
+            const rankIndexStr = parts[1].trim();
+            const targetRankIndex = parseInt(rankIndexStr, 10);
+            // finalStatRanks から現在のランクを取得（前のターンで更新された値）
+            const currentRankIndex = finalStatRanks[statId];
+            // ターゲットランクが現在のランクより高い場合のみ適用
+            // 注意: インデックスが小さい方が高いランク（0が最高、6が最低）
+            if (!isNaN(targetRankIndex) && currentRankIndex !== undefined && !isNaN(currentRankIndex) && targetRankIndex < currentRankIndex) {
+              // finalStatRanks を更新（次のターンの基準になる）
+              finalStatRanks[statId] = targetRankIndex;
+            }
+          }
+        });
+      }
+    });
+    
+    // すべてのターンの選択肢を更新（各ターン時点でのステータスランクを使用）
+    for (let idx = 0; idx < planControls.length; idx += 1) {
+      const ctrl = planControls[idx];
+      if (ctrl && ctrl.statRankUpContainer) {
+        // そのターンで選択されているステータスランクアップがあるかチェック（DOMから直接確認）
+        const hasSelected = ctrl.statRankUpContainer.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+        if (!hasSelected) {
+          // このターン時点でのステータスランクを計算（そのターンより前のターンで選択されたステータスランクアップのみを適用）
+          const currentTurnStatRanks = {...baseStatRanks};
+          for (let i = 0; i < idx; i += 1) {
+            const prevEntry = plan[i];
+            if (prevEntry && prevEntry.statRankUp && prevEntry.statRankUp !== '') {
+              const statRankUps = prevEntry.statRankUp.split(',').filter(s => s.trim() !== '');
+              statRankUps.forEach(statRankUp => {
+                const parts = statRankUp.split(':');
+                if (parts.length === 2) {
+                  const statId = parts[0].trim();
+                  const rankIndexStr = parts[1].trim();
+                  const targetRankIndex = parseInt(rankIndexStr, 10);
+                  const currentRankIndex = currentTurnStatRanks[statId];
+                  if (!isNaN(targetRankIndex) && currentRankIndex !== undefined && !isNaN(currentRankIndex) && targetRankIndex < currentRankIndex) {
+                    currentTurnStatRanks[statId] = targetRankIndex;
+                  }
+                }
+              });
+            }
+          }
+          // 一時的にDOMのステータスランクをこのターン時点での値に設定
+          STAT_FIELDS.forEach(field => {
+            const statSelect = document.getElementById(field.id);
+            if (statSelect && currentTurnStatRanks[field.id] !== undefined) {
+              statSelect.value = String(currentTurnStatRanks[field.id]);
+            }
+          });
+          updateStatRankUpOptions(ctrl.statRankUpContainer, idx);
+        }
+      }
+    }
+    
+    // DOMのステータスランクを最終的な値に戻す（すべてのターンで選択されたステータスランクアップを適用）
+    STAT_FIELDS.forEach(field => {
+      const statSelect = document.getElementById(field.id);
+      if (statSelect && finalStatRanks[field.id] !== undefined) {
+        statSelect.value = String(finalStatRanks[field.id]);
+      }
+    });
 
     return {rows, completionTurn, remaining};
+  }
+  
+  function calcLayerBonusesWithTempRanks(tempStatRanks) {
+    return LAYERS.reduce((acc, layer) => {
+      const lv = LV_BONUS_MAP[document.getElementById(`lv_${layer}`).value] || 0;
+      const stat = calcStatBonusWithTempRanks(layer, tempStatRanks);
+      const factor = calcFactorBonus(layer);
+      const link = LINK_BONUS[layer] || 0;
+      acc[layer] = {lv, stat, factor, link, total: lv + stat + factor + link};
+      return acc;
+    }, {});
+  }
+
+  function calcLayerBonusesWithTempRanksAndEquipLvs(tempStatRanks, tempEquipLvs) {
+    return LAYERS.reduce((acc, layer) => {
+      const lv = LV_BONUS_MAP[String(tempEquipLvs[layer] || 1)] || 0;
+      const stat = calcStatBonusWithTempRanks(layer, tempStatRanks);
+      const factor = calcFactorBonus(layer);
+      const link = LINK_BONUS[layer] || 0;
+      acc[layer] = {lv, stat, factor, link, total: lv + stat + factor + link};
+      return acc;
+    }, {});
+  }
+  
+  function calcStatBonusWithTempRanks(layer, tempStatRanks) {
+    const impact = EQUIP_STAT_IMPACT[layer];
+    if (!impact) return 0;
+    let total = 0;
+    ['large', 'medium', 'small'].forEach(weight => {
+      (impact[weight] || []).forEach(statKey => {
+        const statId = `stat_${statKey}`;
+        const rankIndex = tempStatRanks[statId] !== undefined ? tempStatRanks[statId] : parseInt(document.getElementById(statId).value, 10);
+        const table = STAT_RANK_OPTIONS[rankIndex];
+        if (table) total += table[weight];
+      });
+    });
+    return total;
   }
 
   function getBaseValue(entry) {
@@ -1115,18 +1748,103 @@
         completionTurnIndex = row.turn;
       }
       
-      // 前のターンで完了していた場合、次のターンに源泉変更UIを表示
-      if (prevCompleted && idx < rows.length - 1) {
-        const nextRow = rows[idx + 1];
-        const nextCtrl = planControls[nextRow.turn - 1];
-        if (nextCtrl && nextCtrl.springChangeSelect) {
-          nextCtrl.springChangeSelect.style.display = '';
-          nextCtrl.equipLvUpSelect.style.display = '';
-        }
+      // 特定ターンか掘削完了の次のターンで源泉変更UIを表示
+      const isSpecialTurn = info && (
+        (info.phase === 'クラシック' && info.label === '1月前半') ||
+        (info.phase === 'シニア' && info.label === '1月前半') ||
+        (info.phase === 'シニア' && info.label === '9月後半')
+      );
+      const isFirstTurn = row.turn === 1;
+      // 最初のターン、特定ターン、または前のターンで掘削が完了していた場合のみ表示
+      const showSpringChange = isFirstTurn || isSpecialTurn || prevCompleted;
+      
+      if (showSpringChange && ctrl.springChangeSelect) {
+        ctrl.springChangeSelect.style.display = '';
+        ctrl.equipLvUpSelect.style.display = '';
+        // 選択肢を更新
+        updateSpringChangeOptions(ctrl.springChangeSelect, row.turn - 1);
+        updateEquipLvUpOptions(ctrl.equipLvUpSelect);
+      } else if (ctrl.springChangeSelect) {
+        // 表示条件に合わない場合は非表示
+        ctrl.springChangeSelect.style.display = 'none';
+        ctrl.equipLvUpSelect.style.display = 'none';
       }
       
       prevCompleted = isCompleted;
     });
+    
+    // 掘削が完了したターンの次のターンでも源泉変更を表示
+    // completionTurnIndexは1ベースのターン番号なので、次のターンはcompletionTurnIndex（0ベースではcompletionTurnIndex - 1 + 1 = completionTurnIndex）
+    if (completionTurnIndex && completionTurnIndex <= planControls.length) {
+      const nextTurnIndex = completionTurnIndex; // 完了ターンの次のターン（0ベース、completionTurnIndexは1ベースなのでそのまま使用）
+      const nextCtrl = planControls[nextTurnIndex - 1]; // planControlsは0ベースなので-1
+      if (nextCtrl && nextCtrl.springChangeSelect) {
+        const nextInfo = TURN_INFO[indexFromTurn(nextCtrl.turnIndex)];
+        const isSpecialTurn = nextInfo && (
+          (nextInfo.phase === 'クラシック' && nextInfo.label === '1月前半') ||
+          (nextInfo.phase === 'シニア' && nextInfo.label === '1月前半') ||
+          (nextInfo.phase === 'シニア' && nextInfo.label === '9月後半')
+        );
+        const isFirstTurn = nextCtrl.turnIndex === 1;
+        // 特定ターンや最初のターンでない場合でも、掘削完了の次のターンでは表示
+        if (!isFirstTurn && !isSpecialTurn) {
+          nextCtrl.springChangeSelect.style.display = '';
+          nextCtrl.equipLvUpSelect.style.display = '';
+          updateSpringChangeOptions(nextCtrl.springChangeSelect, nextTurnIndex - 1);
+          updateEquipLvUpOptions(nextCtrl.equipLvUpSelect);
+        }
+      }
+    }
+    
+    // 源泉変更が表示されていないターンは非表示にする（計算済みのターンと未計算のターンの両方）
+    planControls.forEach((ctrl, idx) => {
+      if (!ctrl || !ctrl.springChangeSelect) return;
+      const info = TURN_INFO[indexFromTurn(ctrl.turnIndex)];
+      const isSpecialTurn = info && (
+        (info.phase === 'クラシック' && info.label === '1月前半') ||
+        (info.phase === 'シニア' && info.label === '1月前半') ||
+        (info.phase === 'シニア' && info.label === '9月後半')
+      );
+      const isFirstTurn = ctrl.turnIndex === 1;
+      
+      // 計算済みのターンで、前のターンで掘削が完了していたかチェック
+      const row = rows.find(r => r.turn === ctrl.turnIndex);
+      const prevRow = rows.find(r => r.turn === ctrl.turnIndex - 1);
+      const prevCompleted = prevRow && prevRow.remainSnapshot && 
+        prevRow.remainSnapshot.sand === 0 && 
+        prevRow.remainSnapshot.soil === 0 && 
+        prevRow.remainSnapshot.rock === 0;
+      
+      const showSpringChange = isFirstTurn || isSpecialTurn || prevCompleted;
+      
+      // 表示条件に合わない場合は非表示
+      if (!showSpringChange && ctrl.springChangeSelect.style.display !== 'none') {
+        ctrl.springChangeSelect.style.display = 'none';
+        ctrl.equipLvUpSelect.style.display = 'none';
+      }
+    });
+    
+    // 計算済みのターンでも選択肢を更新
+    rows.forEach((row, idx) => {
+      const ctrl = planControls[row.turn - 1];
+      if (ctrl) {
+        // 源泉変更の選択肢を更新（表示されている場合のみ）
+        if (ctrl.springChangeSelect && ctrl.springChangeSelect.style.display !== 'none') {
+          updateSpringChangeOptions(ctrl.springChangeSelect, row.turn - 1);
+        }
+        // 装備レベルアップの選択肢を更新（表示されている場合のみ）
+        if (ctrl.equipLvUpSelect && ctrl.equipLvUpSelect.style.display !== 'none') {
+          updateEquipLvUpOptions(ctrl.equipLvUpSelect);
+        }
+        // 注意: ステランクアップの選択肢の更新は、simulatePlan内で既に実行されている
+        // （ステータスランクが更新された後に選択肢を更新する必要があるため）
+      }
+    });
+    
+    // 未計算のターンでもステランクアップの選択肢を更新
+    // 注意: ステータスランクが更新されていない可能性があるため、ここでは更新しない
+    // （計算が実行されていないターンでは、ステータスランクは更新されていない）
+    
     for (let i = rows.length; i < planControls.length; i += 1) {
       const ctrl = planControls[i];
       if (ctrl && ctrl.resultSpan) {
@@ -1146,6 +1864,19 @@
 
   function resetSimulation() {
     completionTurnIndex = null;
+    lastSpringChangeTurnIndex = null;
+    lastSimulationRows = null;
+    
+    // 装備レベルのDOMとbaseEquipLvsをリセット
+    ['lv_sand', 'lv_soil', 'lv_rock'].forEach(id => {
+      const select = document.getElementById(id);
+      if (select) {
+        select.value = '1'; // デフォルトはLv1
+        const layer = id.replace('lv_', '');
+        baseEquipLvs[layer] = 1; // 初期装備レベルを保存
+      }
+    });
+    
     planControls.forEach((ctrl, idx) => {
       if (!ctrl) return;
       ctrl.actionSelect.value = 'training';
@@ -1154,6 +1885,20 @@
       ctrl.resultSpan.innerHTML = '基礎: -<br>掘削 砂- 土- 岩-<br>残 砂- 土- 岩-';
       ctrl.participantsSelect.disabled = false;
       ctrl.participantsSelect.classList.remove('disabled-field');
+      // 源泉変更をリセット
+      if (ctrl.springChangeSelect) {
+        ctrl.springChangeSelect.value = '';
+      }
+      // 装備Lvアップをリセット
+      if (ctrl.equipLvUpSelect) {
+        ctrl.equipLvUpSelect.value = '';
+      }
+      // ステランクアップのチェックボックスをリセット
+      if (ctrl.statRankUpContainer) {
+        ctrl.statRankUpContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+          cb.checked = false;
+        });
+      }
     });
     applyRowVisibility(true);
     runCalculation();
@@ -1174,3 +1919,4 @@
 </script>
 </body>
 </html>
+

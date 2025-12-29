@@ -298,6 +298,7 @@
           <label><input type="checkbox" class="link-toggle" data-layer="rock">タルマエ（岩）</label>
           <label><input type="checkbox" class="link-toggle" data-layer="rock">アキュ（岩）</label>
         </div>
+        <button id="apply_link_button" type="button" style="margin-top: 8px;">適用</button>
       </div>
     </div>
     <div class="table-responsive" style="margin-top:12px;">
@@ -310,25 +311,25 @@
         <th>岩（メタルクラウン）</th>
       </tr>
       <tr>
-        <td>Lv補正倍率</td>
+        <td>装備Lv<br>補正倍率</td>
         <td id="out_lv_sand">-</td>
         <td id="out_lv_soil">-</td>
         <td id="out_lv_rock">-</td>
       </tr>
       <tr>
-        <td>ステ補正倍率</td>
+        <td>ステスランク<br>補正倍率</td>
         <td id="out_stat_sand">-</td>
         <td id="out_stat_soil">-</td>
         <td id="out_stat_rock">-</td>
       </tr>
       <tr>
-        <td>青因子補正倍率</td>
+        <td>青因子<br>補正倍率</td>
         <td id="out_fct_sand">-</td>
         <td id="out_fct_soil">-</td>
         <td id="out_fct_rock">-</td>
       </tr>
       <tr>
-          <td>シナリオリンク補正倍率</td>
+          <td>シナリオリンク<br>補正倍率</td>
           <td id="out_link_sand">-</td>
           <td id="out_link_soil">-</td>
           <td id="out_link_rock">-</td>
@@ -370,6 +371,7 @@
             <th>源泉変更</th>
             <th>装備Lvアップ</th>
             <th>ステランクアップ</th>
+            <th>残量設定</th>
             <th>結果（基礎/掘削/残量）</th>
       </tr>
         </thead>
@@ -551,12 +553,32 @@
     }
     document.querySelectorAll('.link-toggle').forEach(cb => {
       cb.addEventListener('change', () => {
-        const layer = cb.dataset.layer;
-        if (!layer) return;
-        LINK_BONUS[layer] += cb.checked ? 10 : -10;
-        runCalculation();
+        // チェックボックスの変更時は計算を実行しない（適用ボタンで実行）
       });
     });
+    
+    const applyLinkButton = document.getElementById('apply_link_button');
+    if (applyLinkButton) {
+      applyLinkButton.addEventListener('click', () => {
+        // シナリオリンクの状態を更新
+        LINK_BONUS.sand = 0;
+        LINK_BONUS.soil = 0;
+        LINK_BONUS.rock = 0;
+        document.querySelectorAll('.link-toggle').forEach(cb => {
+          const layer = cb.dataset.layer;
+          if (layer && cb.checked) {
+            LINK_BONUS[layer] += 10;
+          }
+        });
+        // 掘削力表を更新
+        const bonuses = calcLayerBonuses();
+        updatePowerOutputs(bonuses);
+        // 計算を実行
+        if (lastSimulationRows && lastSimulationRows.length > 0) {
+          runCalculation();
+        }
+      });
+    }
     
     // ステータスランクのセレクトボックスの値が変更されたときに baseStatRanks を更新
     STAT_FIELDS.forEach(field => {
@@ -792,6 +814,31 @@
         }
       });
 
+      // 残量設定の入力欄を作成
+      const remainingInputContainer = document.createElement('div');
+      remainingInputContainer.style.display = 'flex';
+      remainingInputContainer.style.flexDirection = 'column';
+      remainingInputContainer.style.gap = '2px';
+      const remainingInputs = {};
+      LAYERS.forEach(layer => {
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.min = '0';
+        input.placeholder = layer === 'sand' ? '砂' : layer === 'soil' ? '土' : '岩';
+        input.style.width = '60px';
+        input.style.fontSize = '0.85rem';
+        input.style.padding = '2px 4px';
+        remainingInputs[layer] = input;
+        const label = document.createElement('label');
+        label.style.display = 'flex';
+        label.style.alignItems = 'center';
+        label.style.gap = '4px';
+        label.style.fontSize = '0.8rem';
+        label.appendChild(document.createTextNode(layer === 'sand' ? '砂:' : layer === 'soil' ? '土:' : '岩:'));
+        label.appendChild(input);
+        remainingInputContainer.appendChild(label);
+      });
+
       const resultSpan = document.createElement('div');
       resultSpan.className = 'result-summary';
       resultSpan.innerHTML = '基礎: -<br>掘削 砂- 土- 岩-<br>残 砂- 土- 岩-';
@@ -813,6 +860,8 @@
       tdEquipLvUp.appendChild(equipLvUpSelect);
       const tdStatRankUp = document.createElement('td');
       tdStatRankUp.appendChild(statRankUpContainer);
+      const tdRemaining = document.createElement('td');
+      tdRemaining.appendChild(remainingInputContainer);
       const tdResult = document.createElement('td');
       tdResult.className = 'result-cell';
       tdResult.appendChild(resultSpan);
@@ -822,6 +871,7 @@
       tr.appendChild(tdSpringChange);
       tr.appendChild(tdEquipLvUp);
       tr.appendChild(tdStatRankUp);
+      tr.appendChild(tdRemaining);
       tr.appendChild(tdResult);
       tbody.appendChild(tr);
 
@@ -835,12 +885,13 @@
         springChangeSelect,
         equipLvUpSelect,
         statRankUpContainer,
+        remainingInputs,
         resultSpan,
         turnLabelCell,
         turnIndex: index + 1
       });
       if (turnLabelCell) {
-        turnLabelCell.innerHTML = getTurnLabel(index);
+        turnLabelCell.innerHTML = getTurnLabel(index, true);
       }
       updatePlanRowState(index);
       updateSpringChangeVisibility(index);
@@ -1271,7 +1322,7 @@
       ctrl.rowEl.style.display = visible ? '' : 'none';
       ctrl.rowEl.classList.toggle('current-turn', visible && ctrl.turnIndex === currentTurnValue);
       if (ctrl.turnLabelCell) {
-        ctrl.turnLabelCell.innerHTML = getTurnLabel(indexFromTurn(ctrl.turnIndex));
+        ctrl.turnLabelCell.innerHTML = getTurnLabel(indexFromTurn(ctrl.turnIndex), true);
       }
     });
   }
@@ -1280,7 +1331,7 @@
     return Math.max(0, Math.min(TURN_INFO.length - 1, turn - 1));
   }
 
-  function getTurnLabel(index) {
+  function getTurnLabel(index, useHtml = false) {
     const info = TURN_INFO[index];
     const turnNumber = index + 1;
     if (info.phase === MAKE_DEBUT_PHASE && info.label === MAKE_DEBUT_LABEL) {
@@ -1288,7 +1339,11 @@
     }
     if (turnNumber < MAKE_DEBUT_INDEX && info.phase === MAKE_DEBUT_PHASE) {
       const remaining = MAKE_DEBUT_INDEX - turnNumber;
-      return `メイクデビュー<br>まであと${remaining}ターン`;
+      if (useHtml) {
+        return `メイクデビュー<br>まであと${remaining}ターン`;
+      } else {
+        return `メイクデビューまであと${remaining}ターン`;
+      }
     }
     return `${info.phase} ${info.label}`;
   }
@@ -1320,7 +1375,24 @@
         return; // 無効な源泉の場合は計算をスキップ
       }
       
-      const depths = {
+      // 残量設定を確認（任意のターンで設定されている場合、そのターンから計算を開始）
+      let customDepths = null;
+      let customDepthsTurnIndex = null;
+      for (let i = planControls.length - 1; i >= 0; i -= 1) {
+        const ctrl = planControls[i];
+        if (ctrl && ctrl.remainingInputs) {
+          const sand = parseFloat(ctrl.remainingInputs.sand.value) || 0;
+          const soil = parseFloat(ctrl.remainingInputs.soil.value) || 0;
+          const rock = parseFloat(ctrl.remainingInputs.rock.value) || 0;
+          if (sand > 0 || soil > 0 || rock > 0) {
+            customDepths = {sand, soil, rock};
+            customDepthsTurnIndex = i;
+            break;
+          }
+        }
+      }
+      
+      const depths = customDepths || {
         sand: initialPreset.sand,
         soil: initialPreset.soil,
         rock: initialPreset.rock
@@ -1338,10 +1410,16 @@
           break;
         }
       }
+      // 残量設定が指定されている場合、そのターンから計算を開始
+      const startTurnIndex = customDepthsTurnIndex !== null ? customDepthsTurnIndex : (currentTurnValue - 1);
+      
       // 源泉変更が選択されているターン以降も計算対象にする
       const adjustedPlan = plan.map((entry, idx) => {
         const turn = idx + 1;
-        if (turn < currentTurnValue) {
+        if (customDepthsTurnIndex !== null && idx < customDepthsTurnIndex) {
+          // 残量設定が指定されているターンより前はスキップ
+          return {...entry, skip: true};
+        } else if (turn < currentTurnValue) {
           // 現在ターンより前はスキップ
           return {...entry, skip: true};
         } else if (firstSpringChangeTurn && turn >= firstSpringChangeTurn) {
@@ -1897,6 +1975,14 @@
       if (ctrl.statRankUpContainer) {
         ctrl.statRankUpContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
           cb.checked = false;
+        });
+      }
+      // 残量設定をリセット
+      if (ctrl.remainingInputs) {
+        LAYERS.forEach(layer => {
+          if (ctrl.remainingInputs[layer]) {
+            ctrl.remainingInputs[layer].value = '';
+          }
         });
       }
     });

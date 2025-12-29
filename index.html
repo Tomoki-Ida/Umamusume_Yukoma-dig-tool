@@ -298,7 +298,6 @@
           <label><input type="checkbox" class="link-toggle" data-layer="rock">タルマエ（岩）</label>
           <label><input type="checkbox" class="link-toggle" data-layer="rock">アキュ（岩）</label>
         </div>
-        <button id="apply_link_button" type="button" style="margin-top: 8px;">適用</button>
       </div>
     </div>
     <div class="table-responsive" style="margin-top:12px;">
@@ -512,6 +511,16 @@
     if (applyStatsButton) {
       applyStatsButton.addEventListener('click', () => {
         // ステータス、因子、装備レベル、シナリオリンクの変更を適用
+        // シナリオリンクの状態を更新
+        LINK_BONUS.sand = 0;
+        LINK_BONUS.soil = 0;
+        LINK_BONUS.rock = 0;
+        document.querySelectorAll('.link-toggle').forEach(cb => {
+          const layer = cb.dataset.layer;
+          if (layer && cb.checked) {
+            LINK_BONUS[layer] += 10;
+          }
+        });
         // 掘削力表を更新
         const bonuses = calcLayerBonuses();
         updatePowerOutputs(bonuses);
@@ -556,29 +565,6 @@
         // チェックボックスの変更時は計算を実行しない（適用ボタンで実行）
       });
     });
-    
-    const applyLinkButton = document.getElementById('apply_link_button');
-    if (applyLinkButton) {
-      applyLinkButton.addEventListener('click', () => {
-        // シナリオリンクの状態を更新
-        LINK_BONUS.sand = 0;
-        LINK_BONUS.soil = 0;
-        LINK_BONUS.rock = 0;
-        document.querySelectorAll('.link-toggle').forEach(cb => {
-          const layer = cb.dataset.layer;
-          if (layer && cb.checked) {
-            LINK_BONUS[layer] += 10;
-          }
-        });
-        // 掘削力表を更新
-        const bonuses = calcLayerBonuses();
-        updatePowerOutputs(bonuses);
-        // 計算を実行
-        if (lastSimulationRows && lastSimulationRows.length > 0) {
-          runCalculation();
-        }
-      });
-    }
     
     // ステータスランクのセレクトボックスの値が変更されたときに baseStatRanks を更新
     STAT_FIELDS.forEach(field => {

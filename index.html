@@ -815,6 +815,17 @@
         input.style.fontSize = '0.85rem';
         input.style.padding = '2px 4px';
         remainingInputs[layer] = input;
+        // 残量設定の変更時に計算を実行
+        input.addEventListener('change', () => {
+          if (lastSimulationRows && lastSimulationRows.length > 0) {
+            runCalculation();
+          }
+        });
+        input.addEventListener('blur', () => {
+          if (lastSimulationRows && lastSimulationRows.length > 0) {
+            runCalculation();
+          }
+        });
         const label = document.createElement('label');
         label.style.display = 'flex';
         label.style.alignItems = 'center';
@@ -1331,7 +1342,11 @@
         return `メイクデビューまであと${remaining}ターン`;
       }
     }
-    return `${info.phase} ${info.label}`;
+    if (useHtml) {
+      return `${info.phase}<br>${info.label}`;
+    } else {
+      return `${info.phase} ${info.label}`;
+    }
   }
 
   function isSummerBreakPhaseLabel(phase, label) {
@@ -1348,17 +1363,9 @@
     try {
       const bonuses = calcLayerBonuses();
 
-      // 最初のターン（メイクデビューまであと9ターン）の源泉変更から初期源泉を取得
+      // まだ初期化されていない場合は計算をスキップ
       if (planControls.length === 0 || !planControls[0].springChangeSelect) {
-        return; // まだ初期化されていない場合は計算をスキップ
-      }
-      const firstSpringValue = planControls[0].springChangeSelect.value;
-      if (!firstSpringValue || firstSpringValue === '') {
-        return; // 最初のターンで源泉変更が選択されていない場合は計算をスキップ
-      }
-      const initialPreset = SPRING_PRESETS[firstSpringValue];
-      if (!initialPreset) {
-        return; // 無効な源泉の場合は計算をスキップ
+        return;
       }
       
       // 残量設定を確認（任意のターンで設定されている場合、そのターンから計算を開始）
@@ -1378,11 +1385,25 @@
         }
       }
       
-      const depths = customDepths || {
-        sand: initialPreset.sand,
-        soil: initialPreset.soil,
-        rock: initialPreset.rock
-      };
+      // 残量設定が指定されていない場合のみ、源泉変更を確認
+      let depths;
+      if (customDepths) {
+        depths = customDepths;
+      } else {
+        const firstSpringValue = planControls[0].springChangeSelect.value;
+        if (!firstSpringValue || firstSpringValue === '') {
+          return; // 残量設定も源泉変更も指定されていない場合は計算をスキップ
+        }
+        const initialPreset = SPRING_PRESETS[firstSpringValue];
+        if (!initialPreset) {
+          return; // 無効な源泉の場合は計算をスキップ
+        }
+        depths = {
+          sand: initialPreset.sand,
+          soil: initialPreset.soil,
+          rock: initialPreset.rock
+        };
+      }
       if (Object.values(depths).some(v => v < 0)) {
         throw new Error('地層の残量は0以上を入力してください。');
       }
